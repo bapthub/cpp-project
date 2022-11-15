@@ -68,7 +68,7 @@ public:
     // Note that this function is not virtual, it does not depend
     // on the static type of the instance
 
-    virtual void move(){} = 0; 
+    virtual void move(){};// = 0; 
     // TODO: Animals move around, but in a different fashion depending on which
     // type of animal
 };
@@ -79,6 +79,7 @@ class sheep : public animal
 {
     // TODO
     // Ctor
+    
     // Dtor
     // implement functions that are purely virtual in base class
 };
@@ -114,7 +115,7 @@ public:
     ~ground(){}; 
 
     // TODO: Add an animal
-    void add_animal(some argument here); 
+    //void add_animal(some argument here); 
 
     // TODO: "refresh the screen": Move animals and draw them
     // Possibly other methods, depends on your implementation
