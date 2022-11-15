@@ -87,6 +87,14 @@ protected:
     unsigned _h_size;
     unsigned _w_size;
 
+    unsigned time_to_change;
+
+    unsigned _x_dir;
+    unsigned _y_dir;
+
+    unsigned speed;
+
+    void get_next_pos();
 };
 
 // Insert here:

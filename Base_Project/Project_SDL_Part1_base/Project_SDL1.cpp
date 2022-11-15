@@ -78,7 +78,6 @@ namespace {
         return renderer;
     }
 
-//    get_random_dir(unsigned speed)
 } // namespace
 
 application::application(unsigned n_sheep, unsigned n_wolf)
@@ -142,13 +141,13 @@ void ground::add_animal(const std::shared_ptr<animal>& animal)
 {
     animals.push_back(animal);
 }
- 
+
 animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
     this->window_surface_ptr_ = window_surface_ptr;
     this->image_ptr_ = load_surface_for(file_path, window_surface_ptr);
-
     this->_y = random() % window_surface_ptr->h;
     this->_x = random() % window_surface_ptr->w;
+    this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
 
 animal::~animal() {
@@ -173,11 +172,28 @@ void animal::draw() {
     }
 }
 
+void animal::get_next_pos() {
+    if (time_to_change > SDL_GetTicks()) {
+        _x = _x_dir - _x < speed ? 0 : _x + ((_x_dir < _x ? -1 : 1) * speed);
+        _y = _y_dir - _y < speed ? 0 : _y + ((_y_dir < _y ? -1 : 1) * speed);
+        return;
+    }
 
-// void Sheep::move(SDL_Surface *window_surface_ptr) {
-//     this->_x = 0;
-//     this->_y = 0;
-// }
+    _y_dir = random() % window_surface_ptr_->h;
+    _x_dir = random() % window_surface_ptr_->w;
+
+    _x = _x_dir - _x < speed ? 0 : _x + ((_x_dir < _x ? -1 : 1) * speed);
+    _y= _y_dir - _y < speed ? 0 : _y + ((_y_dir < _y ? -1 : 1) * speed);
+}
+
+
+void Sheep::move(SDL_Surface *window_surface_ptr) {
+    get_next_pos();
+}
+
+void Wolf::move(SDL_Surface *window_surface_ptr) {
+    get_next_pos();
+}
 
 // void Wolf::move(SDL_Surface *window_surface_ptr) {
 //     this->_x = 0;
