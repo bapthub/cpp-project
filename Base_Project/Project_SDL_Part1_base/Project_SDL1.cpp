@@ -9,25 +9,23 @@
 #include <random>
 #include <string>
 
-void init()
+SDL_Window *create_window()
 {
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO) < 0)
-        throw std::runtime_error("init():" + std::string(SDL_GetError()));
-
     // Initialize SDL window
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
 
     // Create a window, use frame_width and frame_height, frame_boundary
-    SDL_Window* window_ptr = SDL_CreateWindow
+    SDL_Window *window_ptr = SDL_CreateWindow
         ("SDL2 Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
          400, 400, flags);
     // SDL_Window* window_ptr = SDL_CreateWindow
     //     ("SDL2 Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     //      frame_width, frame_height, flags);
+    return window_ptr;
+}
 
-    SDL_Surface * surf = SDL_GetWindowSurface(window_ptr);
-
+SDL_Renderer *create_render(SDL_Window *window_ptr)
+{
     // We must call SDL_CreateRenderer in order for draw calls to affect this window.
     SDL_Renderer* renderer = SDL_CreateRenderer(window_ptr, -1, 0);
 
@@ -40,6 +38,18 @@ void init()
     // Up until now everything was drawn behind the scenes.
     // This will show the new, red contents of the window.
     SDL_RenderPresent(renderer);
+    return renderer;
+}
+
+void init()
+{
+    // Initialize SDL
+    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO) < 0)
+        throw std::runtime_error("init():" + std::string(SDL_GetError()));
+
+    SDL_Window *window_ptr = create_window();
+    SDL_Surface *surf = SDL_GetWindowSurface(window_ptr);
+    // SDL_Renderer *renderer = create_render(window_ptr);
 
     // Initialize PNG loading
     int imgFlags = IMG_INIT_PNG;
@@ -49,25 +59,32 @@ void init()
                                  std::string(IMG_GetError()));
 
 
-    SDL_Surface *image = IMG_Load("../../media/sheep.png");
+    SDL_Surface *image = IMG_Load("../../media/grass.png");
+    SDL_Surface *image_sheep = IMG_Load("../../media/sheep.png");
 
-    int return_val = SDL_BlitSurface(image,NULL,surf,NULL);
+    // SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
+    SDL_Rect rect_sheep{150, 150, 67, 71};
+    SDL_Rect img_rect{0, 0, 400, 400};
+
+    // int rec = SDL_RenderDrawRect(renderer,&img_rect);
+    // std::cout << "rec: " << rec << std::endl;
+    
+    int return_val = SDL_BlitSurface(image,NULL,surf,&img_rect);
     std::cout << "return_val: " << return_val << std::endl;
 
+    return_val = SDL_BlitSurface(image_sheep,NULL,surf,&rect_sheep);
+    std::cout << "return_val: " << return_val << std::endl;
 
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, image);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
-
-
+    // SDL_RenderCopy(renderer, texture, NULL, &img_rect);
+    // SDL_RenderPresent(renderer);
     SDL_UpdateWindowSurface(window_ptr);
 
     // show image for 5 seconds
     SDL_Delay(5000);
 
-    SDL_DestroyTexture(texture);
+    // SDL_DestroyTexture(texture);
     SDL_FreeSurface(image);
-    SDL_DestroyRenderer(renderer);
+    // SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window_ptr);
 }
 
