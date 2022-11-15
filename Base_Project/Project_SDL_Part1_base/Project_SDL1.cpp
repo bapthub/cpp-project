@@ -122,15 +122,15 @@ unsigned animal::getY() const {
 }
 
 
-void sheep::move(SDL_Surface *window_surface_ptr) {
-    this->_x = 0;
-    this->_y = 0;
-}
+// void sheep::move(SDL_Surface *window_surface_ptr) {
+//     this->_x = 0;
+//     this->_y = 0;
+// }
 
-void wolf::move(SDL_Surface *window_surface_ptr) {
-    this->_x = 0;
-    this->_y = 0;
-}
+// void wolf::move(SDL_Surface *window_surface_ptr) {
+//     this->_x = 0;
+//     this->_y = 0;
+// }
 
 sheep::sheep(SDL_Surface *window_surface_ptr): animal("../media/sheep.png" , window_surface_ptr) {
     this->_h_size = 71;
