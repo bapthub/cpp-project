@@ -59,27 +59,45 @@ private:
 public:
     // TODO: The constructor has to load the sdl_surface that corresponds to 
     // the texture
-    animal(const std::string& file_path, SDL_Surface* window_surface_ptr){};
-    ~animal(){}; 
-    // TODO: Use the destructor to release memory and "clean up behind you"
+    animal(const std::string& file_path, SDL_Surface* window_surface_ptr);
+    ~animal();
+//     TODO: Use the destructor to release memory and "clean up behind you"
 
     void draw(){}; 
     // TODO: Draw the animal on the screen <-> window_surface_ptr.
     // Note that this function is not virtual, it does not depend
     // on the static type of the instance
 
-    virtual void move(){};// = 0; 
+    virtual void move(SDL_Surface *window_surface_ptr){} = 0;
     // TODO: Animals move around, but in a different fashion depending on which
     // type of animal
+
+    unsigned getX() const;
+
+    unsigned getY() const;
+
+protected:
+    unsigned _x;
+    unsigned _y;
+
+    unsigned _h_size;
+    unsigned _w_size;
+
 };
 
 // Insert here:
 // class sheep, derived from animal
 class sheep : public animal 
 {
+    unsigned const speed = 20;
+
+    public:
+        sheep(SDL_Surface *window_surface_ptr);
+
+        virtual void move(SDL_Surface *window_surface_ptr) override;
+
     // TODO
     // Ctor
-    
     // Dtor
     // implement functions that are purely virtual in base class
 };
@@ -89,6 +107,13 @@ class sheep : public animal
 // Once the application works for sheep you can add the wolves
 class wolf : public animal
 {
+    unsigned speed = 20;
+
+    public:
+        wolf(SDL_Surface *window_surface_ptr);
+
+        virtual void move(SDL_Surface *window_surface_ptr) override;
+
     // Astuce : le faire se déplacer à un point aléatoire à la place de random
     // TODO
     // Ctor
@@ -115,7 +140,7 @@ public:
     ~ground(){}; 
 
     // TODO: Add an animal
-    //void add_animal(some argument here); 
+    //void add_animal(some argument here);
 
     // TODO: "refresh the screen": Move animals and draw them
     // Possibly other methods, depends on your implementation
