@@ -38,8 +38,11 @@ constexpr double frame_rate = 60.0;             // Refresh rate
 constexpr double frame_time = 1. / frame_rate;  // Time per frame
 constexpr unsigned frame_width = 1400;          // Width of window in pixel
 constexpr unsigned frame_height = 900;          // Height of window in pixel
-constexpr unsigned frame_boundary = 100;        // Minimal distance of animals 
+constexpr unsigned frame_boundary = 100;        // Minimal distance of animals
                                                 // to the border of the screen
+constexpr char path_img_sheep[] = "../../media/sheep.png"; 
+constexpr char path_img_wolf[] = "../../media/wolf.png"; 
+constexpr char path_img_grass[] = "../../media/grass.png"; 
 
 
 void init();                            // Helper function to initialize SDL
@@ -55,6 +58,7 @@ private:
     // The texture of the sheep (the loaded image), use load_surface_for
 
     // TODO: Attribute(s) to define its position
+    //
 
 public:
     // TODO: The constructor has to load the sdl_surface that corresponds to 
@@ -99,6 +103,7 @@ class sheep : public animal
     // TODO
     // Ctor
     // Dtor
+    // 
     // implement functions that are purely virtual in base class
 };
 
@@ -118,6 +123,7 @@ class wolf : public animal
     // TODO
     // Ctor
     // Dtor
+    //
     // implement functions that are purely virtual in base class
 };
 
@@ -130,7 +136,10 @@ private:
     SDL_Surface* window_surface_ptr_;
 
     // Attribute to store all the wolves and sheeps
-    // TODO
+    unsigned _nb_sheep;
+    unsigned _nb_wolf;
+    std::vector<wolf> list_wolves;
+    std::vector<sheep> list_sheeps;
 
 public:
     // TODO: Ctor
@@ -140,7 +149,7 @@ public:
     ~ground(){}; 
 
     // TODO: Add an animal
-    //void add_animal(some argument here);
+    void add_animal(animal *animal);
 
     // TODO: "refresh the screen": Move animals and draw them
     // Possibly other methods, depends on your implementation
@@ -156,9 +165,8 @@ private:
     SDL_Event window_event_;
 
     // Other attributes here, for example an instance of ground
-
     // Instance of ground
-    ground ground_;
+    ground *ground_;
 public:
     application(unsigned n_sheep, unsigned n_wolf); // Ctor
     ~application();                                 // Dtor
