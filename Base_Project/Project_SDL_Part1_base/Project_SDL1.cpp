@@ -59,22 +59,19 @@ namespace {
         return window_ptr;
     }
 
-    SDL_Renderer *create_render(SDL_Window *window_ptr)
-    {
-        // We must call SDL_CreateRenderer in order for draw calls to affect this window.
-        SDL_Renderer* renderer = SDL_CreateRenderer(window_ptr, -1, 0);
+    // SDL_Renderer *create_render(SDL_Window *window_ptr)
+    // {
+    //     // We must call SDL_CreateRenderer in order for draw calls to affect this window.
 
-        // Select the color for drawing. It is set to green here.
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    //     // Select the color for drawing. It is set to green here.
+    //     // SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 
-        // Clear the entire screen to our selected color.
-        SDL_RenderClear(renderer);
+    //     // Clear the entire screen to our selected color.
 
-        // Up until now everything was drawn behind the scenes.
-        // This will show the new, red contents of the window.
-        SDL_RenderPresent(renderer);
-        return renderer;
-    }
+    //     // Up until now everything was drawn behind the scenes.
+    //     // This will show the new, red contents of the window.
+    //     return renderer;
+    // }
 
 } // namespace
 
@@ -86,6 +83,7 @@ application::application(unsigned n_sheep, unsigned n_wolf)
     }
 
     window_surface_ptr_ = SDL_GetWindowSurface(window_ptr_);
+    renderer_ = SDL_CreateRenderer(window_ptr_, -1, 0);
 
     SDL_Surface *image = IMG_Load(path_img_grass);
     SDL_Surface* formatted_image = SDL_ConvertSurface(image, window_surface_ptr_->format, 0);
@@ -101,14 +99,18 @@ application::application(unsigned n_sheep, unsigned n_wolf)
 
     ground_ = new ground(window_surface_ptr_, n_sheep, n_wolf);
 
-    SDL_UpdateWindowSurface(window_ptr_);
+    // SDL_UpdateWindowSurface(window_ptr_);
+
+    SDL_RenderPresent(renderer_);
 }
 
 int application::loop(unsigned window_time)
 {
     while(SDL_GetTicks() < window_time * 1000) {
+        SDL_RenderClear(renderer_);
         ground_->update();
-        SDL_UpdateWindowSurface(window_ptr_);
+        SDL_RenderPresent(renderer_);
+        // SDL_UpdateWindowSurface(window_ptr_);
         std::cout << "updated ? = " << SDL_UpdateWindowSurface(window_ptr_)<< std::endl;
 
     }

@@ -168,6 +168,7 @@ private:
     SDL_Window* window_ptr_;
     SDL_Surface* window_surface_ptr_;
     SDL_Event window_event_;
+    SDL_Renderer* renderer_;
 
     // Other attributes here, for example an instance of ground
     // Instance of ground
