@@ -31,9 +31,12 @@ namespace {
                               SDL_Surface* window_surface_ptr) {
 
         SDL_Surface* surface = IMG_Load(path.c_str());
+
         if (surface == NULL) {
             throw std::runtime_error("can't load surface");
         }
+        std::cout<<path.c_str()<< std::endl;
+
 
         SDL_Surface* formattedSurface = SDL_ConvertSurface(surface, window_surface_ptr->format, 0);
         if (formattedSurface == NULL) {
@@ -87,7 +90,7 @@ application::application(unsigned n_sheep, unsigned n_wolf)
     window_surface_ptr_ = SDL_GetWindowSurface(window_ptr_);
     // SDL_Renderer *renderer = create_render(window_ptr);
 
-    SDL_Surface *image = IMG_Load("../media/grass.png");
+    SDL_Surface *image = IMG_Load(path_img_grass);
     SDL_Surface* formatted_image = SDL_ConvertSurface(image, window_surface_ptr_->format, 0);
         if (formatted_image == NULL) {
             throw std::runtime_error("can't format surface");
@@ -100,15 +103,19 @@ application::application(unsigned n_sheep, unsigned n_wolf)
 
     // int rec = SDL_RenderDrawRect(renderer,&img_rect);
     // std::cout << "rec: " << rec << std::endl;
-    
+
     int return_val = SDL_BlitSurface(formatted_image,NULL,window_surface_ptr_ ,NULL);
+
     std::cout << "return_val: " << return_val << std::endl;
 
     // SDL_RenderCopy(renderer, texture, NULL, &img_rect);
     // SDL_RenderPresent(renderer);
-    SDL_UpdateWindowSurface(window_ptr_);
 
     ground_ = new ground(window_surface_ptr_, n_sheep, n_wolf);
+    SDL_UpdateWindowSurface(window_ptr_);
+    std::cout<<"updated"<< std::endl;
+
+
 }
 
 int application::loop(unsigned window_time)
@@ -138,11 +145,15 @@ ground::ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
     for (int i = 0; i < n_sheep; ++i) {
         std::shared_ptr<Sheep> sheep = std::make_shared<Sheep>(window_surface_ptr_);
         add_animal(sheep);
+        std::cout << "test animal" << std::endl;
+
         sheep->draw();
     }
     for (int i = 0; i < n_wolf; ++i) {
         std::shared_ptr<Wolf> wolf =std::make_shared<Wolf>(window_surface_ptr_);
         add_animal(wolf);
+        std::cout << "test wolf" << std::endl;
+
         wolf->draw();
     }
 }
@@ -156,7 +167,11 @@ animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
     this->window_surface_ptr_ = window_surface_ptr;
     this->image_ptr_ = load_surface_for(file_path, window_surface_ptr);
     this->_y = random() % window_surface_ptr->h;
-    this->_x = random() * window_surface_ptr->w;
+    std::cout << _y << std::endl;
+
+    this->_x = random() % window_surface_ptr->w;
+    std::cout << _x << std::endl;
+
 }
 
 animal::~animal() {
@@ -192,12 +207,12 @@ void animal::draw() {
 //     this->_y = 0;
 // }
 
-Sheep::Sheep(SDL_Surface *window_surface_ptr): animal("../media/Sheep.png" , window_surface_ptr) {
+Sheep::Sheep(SDL_Surface *window_surface_ptr): animal(path_img_sheep, window_surface_ptr) {
     this->_h_size = 71;
     this->_w_size = 67;
 }
 
-Wolf::Wolf(SDL_Surface *window_surface_ptr) : animal("../media/Wolf.png", window_surface_ptr) {
+Wolf::Wolf(SDL_Surface *window_surface_ptr) : animal(path_img_wolf, window_surface_ptr) {
     this->_h_size = 42;
     this->_w_size = 62;
 }
