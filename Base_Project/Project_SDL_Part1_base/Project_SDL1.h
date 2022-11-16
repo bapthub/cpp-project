@@ -72,7 +72,7 @@ public:
     // Note that this function is not virtual, it does not depend
     // on the static type of the instance
 
-     virtual void move(){} = 0;
+     virtual void move(){};
     // TODO: Animals move around, but in a different fashion depending on which
     // type of animal
 
@@ -106,7 +106,7 @@ class Sheep : public animal
     public:
         Sheep(SDL_Surface *window_surface_ptr);
 
-        // virtual void move(SDL_Surface *window_surface_ptr) override;
+        virtual void move() override;
 
     // TODO
     // Ctor
@@ -125,7 +125,7 @@ class Wolf : public animal
     public:
         Wolf(SDL_Surface *window_surface_ptr);
 
-        // virtual void move(SDL_Surface *window_surface_ptr) override;
+        virtual void move() override;
 
     // Astuce : le faire se déplacer à un point aléatoire à la place de random
     // TODO

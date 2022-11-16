@@ -35,8 +35,6 @@ namespace {
         if (surface == NULL) {
             throw std::runtime_error("can't load surface");
         }
-        std::cout<<path.c_str()<< std::endl;
-
 
         SDL_Surface* formattedSurface = SDL_ConvertSurface(surface, window_surface_ptr->format, 0);
         if (formattedSurface == NULL) {
@@ -110,6 +108,7 @@ int application::loop(unsigned window_time)
 {
     while(SDL_GetTicks() < window_time * 1000) {
         ground_->update();
+        SDL_UpdateWindowSurface(window_ptr_);
     }
     return 0;
 }
@@ -139,8 +138,8 @@ ground::ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
 
 void ground::update() {
     std::for_each(animals.begin(), animals.end(),[](std::shared_ptr<animal> animal) {
-        animal.move();
-    })
+        animal->move();
+    });
 }
 
 void ground::add_animal(const std::shared_ptr<animal>& animal)
@@ -156,18 +155,22 @@ animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
     this->_x = random() % window_surface_ptr->w;
 
     if (this->_y < _h_size) {
-        this->_y -=_h_size;
+        this->_y =+_h_size;
     }
     if (this->_y > window_surface_ptr->h - _h_size) {
-        this->_y -= _h_size;
+        this->_y =- _h_size;
     }
 
     if (this->_x < _w_size) {
-        this->_x += _w_size;
+        this->_x =- _w_size;
     }
     if (this->_x < window_surface_ptr->w - _w_size) {
-        this->_x -= _w_size;
+        this->_x =+ _w_size;
     }
+
+    std::cout<<this->_y<< std::endl;
+    std::cout<<this->_x<< std::endl;
+
 
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
