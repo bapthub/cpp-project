@@ -1,8 +1,12 @@
 #include "Project_SDL1.h"
 #include <stdio.h>
 #include <string>
+#include <ctime>
+
 
 int main(int argc, char* argv[]) {
+
+  srand ( time(NULL) );
 
   std::cout << "Starting up the application" << std::endl;
 

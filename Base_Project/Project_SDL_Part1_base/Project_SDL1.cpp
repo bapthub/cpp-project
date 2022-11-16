@@ -151,28 +151,56 @@ animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
     this->window_surface_ptr_ = window_surface_ptr;
     this->image_ptr_ = load_surface_for(file_path, window_surface_ptr);
 
-    this->_y = random() % window_surface_ptr->h;
-    this->_x = random() % window_surface_ptr->w;
+    // this->_y = random() % window_surface_ptr->h;
+    // this->_x = random() % window_surface_ptr->w;
 
-    if (this->_y < _h_size) {
-        this->_y =+_h_size;
+    // if (this->_y < _h_size) {
+    //     this->_y =+_h_size;
+    // }
+    // if (this->_y > window_surface_ptr->h - _h_size) {
+    //     this->_y =- _h_size;
+    // }
+
+    // if (this->_x < _w_size) {
+    //     this->_x =- _w_size;
+    // }
+    // if (this->_x < window_surface_ptr->w - _w_size) {
+    //     this->_x =+ _w_size;
+    // }
+// window_surface_ptr->h et w non reconnu ainsi que _h_size et _w_size car animal non spawn encore ?
+
+    this->_y = random() % frame_height;
+    this->_x = random() % frame_width;
+
+    std::cout<<"y = "<<this->_y<< std::endl;
+    std::cout<<"x = "<<this->_x<< std::endl;
+
+    std::cout<<"_h_size = "<<_h_size<< std::endl;
+    std::cout<<"_w_size = "<<_w_size<< std::endl;
+
+    if (this->_y < 71) {
+        this->_y += 71;
     }
-    if (this->_y > window_surface_ptr->h - _h_size) {
-        this->_y =- _h_size;
+    if (this->_y > frame_height - 71) {
+        this->_y -= 71;
     }
 
-    if (this->_x < _w_size) {
-        this->_x =- _w_size;
+    if (this->_x < 67) {
+        this->_x += 67;
     }
-    if (this->_x < window_surface_ptr->w - _w_size) {
-        this->_x =+ _w_size;
+    if (this->_x > frame_width - 67) {
+        this->_x -= 67;
     }
+
+    std::cout<<"after adjust"<< std::endl;
 
     std::cout<<this->_y<< std::endl;
     std::cout<<this->_x<< std::endl;
 
 
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
+    std::cout<<"ttl = "<<this->time_to_change<< std::endl;
+
 }
 
 animal::~animal() {
@@ -196,8 +224,9 @@ void animal::get_next_pos() {
         return;
     }
 
-    _y_dir = (random() % (window_surface_ptr_->h - _h_size)) + _h_size / 2;
-    _x_dir = (random() % (window_surface_ptr_->w - _w_size)) + _w_size / 2;
+    _y_dir = (random() % (frame_height - _h_size)) + _h_size / 2;
+
+    _x_dir = (random() % (frame_width - _w_size)) + _w_size / 2;
 
     _x = _x_dir - _x < speed ? 0 : _x + ((_x_dir < _x ? -1 : 1) * speed);
     _y= _y_dir - _y < speed ? 0 : _y + ((_y_dir < _y ? -1 : 1) * speed);
