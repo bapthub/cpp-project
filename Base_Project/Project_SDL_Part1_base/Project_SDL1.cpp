@@ -147,10 +147,11 @@ void ground::add_animal(const std::shared_ptr<animal>& animal)
     animals.push_back(animal);
 }
 
-animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
+animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr, int animal_height, int animal_width) {
     this->window_surface_ptr_ = window_surface_ptr;
     this->image_ptr_ = load_surface_for(file_path, window_surface_ptr);
-
+    this->_w_size = animal_width;
+    this->_h_size = animal_height;
     // this->_y = random() % window_surface_ptr->h;
     // this->_x = random() % window_surface_ptr->w;
 
@@ -169,8 +170,8 @@ animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
     // }
 // window_surface_ptr->h et w non reconnu ainsi que _h_size et _w_size car animal non spawn encore ?
 
-    this->_y = random() % frame_height;
-    this->_x = random() % frame_width;
+    this->_y = (random() % (frame_height - _h_size)) + _h_size / 2;;
+    this->_x = (random() % (frame_width - _w_size)) + _w_size / 2;
 
     std::cout<<"y = "<<this->_y<< std::endl;
     std::cout<<"x = "<<this->_x<< std::endl;
@@ -178,19 +179,19 @@ animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
     std::cout<<"_h_size = "<<_h_size<< std::endl;
     std::cout<<"_w_size = "<<_w_size<< std::endl;
 
-    if (this->_y < 71) {
-        this->_y += 71;
-    }
-    if (this->_y > frame_height - 71) {
-        this->_y -= 71;
-    }
-
-    if (this->_x < 67) {
-        this->_x += 67;
-    }
-    if (this->_x > frame_width - 67) {
-        this->_x -= 67;
-    }
+//    if (this->_y < 71) {
+//        this->_y += 71;
+//    }
+//    if (this->_y > frame_height - 71) {
+//        this->_y -= 71;
+//    }
+//
+//    if (this->_x < 67) {
+//        this->_x += 67;
+//    }
+//    if (this->_x > frame_width - 67) {
+//        this->_x -= 67;
+//    }
 
     std::cout<<"after adjust"<< std::endl;
 

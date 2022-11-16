@@ -63,7 +63,7 @@ private:
 public:
     // TODO: The constructor has to load the sdl_surface that corresponds to 
     // the texture
-    animal(const std::string& file_path, SDL_Surface* window_surface_ptr);
+    animal(const std::string& file_path, SDL_Surface* window_surface_ptr, int animal_height, int animal_width);
     ~animal();
 //     TODO: Use the destructor to release memory and "clean up behind you"
 
@@ -81,11 +81,11 @@ public:
     unsigned getY() const;
 
 protected:
-    unsigned _x;
-    unsigned _y;
+    int _x;
+    int _y;
 
-    unsigned _h_size;
-    unsigned _w_size;
+    int _h_size;
+    int _w_size;
 
     unsigned time_to_change;
 
