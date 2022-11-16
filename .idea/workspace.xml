@@ -18,9 +18,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53258cc8-1dff-4e93-ac59-3a95308fedd2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Base_Project/Project_SDL_Part1_base/Project_SDL1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Base_Project/Project_SDL_Part1_base/Project_SDL1.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Base_Project/Project_SDL_Part1_base/Project_SDL1.h" beforeDir="false" afterPath="$PROJECT_DIR$/Base_Project/Project_SDL_Part1_base/Project_SDL1.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Base_Project/Project_SDL_Part1_base/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Base_Project/Project_SDL_Part1_base/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +76,7 @@
       <option name="presentableId" value="Default" />
       <updated>1668499793728</updated>
       <workItem from="1668499797350" duration="10675000" />
-      <workItem from="1668588305597" duration="2112000" />
+      <workItem from="1668588305597" duration="5148000" />
     </task>
     <servers />
   </component>
