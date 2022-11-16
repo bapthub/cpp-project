@@ -35,8 +35,6 @@ namespace {
         if (surface == NULL) {
             throw std::runtime_error("can't load surface");
         }
-        std::cout<<path.c_str()<< std::endl;
-
 
         SDL_Surface* formattedSurface = SDL_ConvertSurface(surface, window_surface_ptr->format, 0);
         if (formattedSurface == NULL) {
@@ -49,6 +47,7 @@ namespace {
         // Helper function to load a png for a specific surface
         // See SDL_ConvertSurface
     }
+
     SDL_Window *create_window()
     {
         // Initialize SDL window
@@ -60,25 +59,6 @@ namespace {
              frame_width, frame_height, flags);
         return window_ptr;
     }
-
-    SDL_Renderer *create_render(SDL_Window *window_ptr)
-    {
-        // We must call SDL_CreateRenderer in order for draw calls to affect this window.
-        SDL_Renderer* renderer = SDL_CreateRenderer(window_ptr, -1, 0);
-
-        // Select the color for drawing. It is set to green here.
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-
-        // Clear the entire screen to our selected color.
-        SDL_RenderClear(renderer);
-
-        // Up until now everything was drawn behind the scenes.
-        // This will show the new, red contents of the window.
-        SDL_RenderPresent(renderer);
-        return renderer;
-    }
-
-//    get_random_dir(unsigned speed)
 } // namespace
 
 application::application(unsigned n_sheep, unsigned n_wolf)
@@ -89,37 +69,37 @@ application::application(unsigned n_sheep, unsigned n_wolf)
     }
 
     window_surface_ptr_ = SDL_GetWindowSurface(window_ptr_);
-
     SDL_Surface *image = IMG_Load(path_img_grass);
-    SDL_Surface* formatted_image = SDL_ConvertSurface(image, window_surface_ptr_->format, 0);
-    if (formatted_image == NULL) {
-        throw std::runtime_error("can't format surface");
-    }
-
+    background_ = SDL_ConvertSurface(image, window_surface_ptr_->format, 0);
     SDL_FreeSurface(image);
-
-    int return_val = SDL_BlitSurface(formatted_image,NULL,window_surface_ptr_ ,NULL);
-
-    std::cout << "return_val: " << return_val << std::endl;
-
-    ground_ = new ground(window_surface_ptr_, n_sheep, n_wolf);
+    print_background();
+    ground_ = std::make_unique<ground>(window_surface_ptr_, n_sheep, n_wolf);
 
     SDL_UpdateWindowSurface(window_ptr_);
 }
 
+void application::print_background()
+{    
+    if(SDL_BlitSurface(background_,NULL,window_surface_ptr_ ,NULL) < 0)
+    {
+        throw std::runtime_error("can't blit surface");
+    }
+}
 int application::loop(unsigned window_time)
 {
     while(SDL_GetTicks() < window_time * 1000) {
-
+        print_background();
+        ground_->update();
+        SDL_UpdateWindowSurface(window_ptr_);
     }
     return 0;
 }
 
 application::~application()
 {
-    SDL_FreeSurface(window_surface_ptr_);
+    SDL_FreeSurface(background_);
+    //SDL_FreeSurface(window_surface_ptr_);
     SDL_DestroyWindow(window_ptr_);
-    //free IMAGES
 }
 
 ground::ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf)
@@ -138,17 +118,28 @@ ground::ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
     }
 }
 
+void ground::update() {
+    std::for_each(animals.begin(), animals.end(),[](std::shared_ptr<animal> animal) {
+        animal->move();
+        animal->draw();
+    });
+}
+
 void ground::add_animal(const std::shared_ptr<animal>& animal)
 {
     animals.push_back(animal);
 }
- 
-animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
+
+animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr, int animal_height, int animal_width) {
     this->window_surface_ptr_ = window_surface_ptr;
     this->image_ptr_ = load_surface_for(file_path, window_surface_ptr);
+    this->_w_size = animal_width;
+    this->_h_size = animal_height;
 
-    this->_y = random() % window_surface_ptr->h;
-    this->_x = random() % window_surface_ptr->w;
+    this->_y = (random() % (frame_height - _h_size));
+    this->_x = (random() % (frame_width - _w_size));
+    time_to_change = 0;
+
 }
 
 animal::~animal() {
@@ -156,40 +147,42 @@ animal::~animal() {
     this->image_ptr_ = nullptr;
 }
 
-unsigned animal::getX() const {
-    return _x;
-}
-
-unsigned animal::getY() const {
-    return _y;
-}
-
 void animal::draw() {
 
     SDL_Rect img_rect{_x, _y, _h_size, _w_size};
-
     if(SDL_BlitSurface(image_ptr_,NULL,window_surface_ptr_ ,&img_rect)) {
         throw std::runtime_error("cannot draw animal");
     }
 }
 
+void animal::get_next_pos() {
+    if (time_to_change > SDL_GetTicks()) {
+        _x = (_x_dir - _x) < speed ? _x : _x + ((_x_dir < _x ? -1 : 1) * speed);
+        _y = (_y_dir - _y) < speed ? _y : _y + ((_y_dir < _y ? -1 : 1) * speed);
+        return;
+    }
 
-// void Sheep::move(SDL_Surface *window_surface_ptr) {
-//     this->_x = 0;
-//     this->_y = 0;
-// }
-
-// void Wolf::move(SDL_Surface *window_surface_ptr) {
-//     this->_x = 0;
-//     this->_y = 0;
-// }
-
-Sheep::Sheep(SDL_Surface *window_surface_ptr): animal(path_img_sheep, window_surface_ptr) {
-    this->_h_size = 71;
-    this->_w_size = 67;
+    _y_dir = (random() % (frame_height - _h_size));
+    _x_dir = (random() % (frame_width - _w_size));
+    
+    _x = (_x_dir - _x) < speed ? _x : _x + ((_x_dir < _x ? -1 : 1) * speed);
+    _y= (_y_dir - _y) < speed ? _y : _y + ((_y_dir < _y ? -1 : 1) * speed);
+    this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
 
-Wolf::Wolf(SDL_Surface *window_surface_ptr) : animal(path_img_wolf, window_surface_ptr) {
-    this->_h_size = 42;
-    this->_w_size = 62;
+
+void Sheep::move() {
+    get_next_pos();
+}
+
+void Wolf::move() {
+    get_next_pos();
+}
+
+Sheep::Sheep(SDL_Surface *window_surface_ptr): animal(path_img_sheep, window_surface_ptr, 71, 67) {
+    speed = 1;
+}
+
+Wolf::Wolf(SDL_Surface *window_surface_ptr) : animal(path_img_wolf, window_surface_ptr, 42, 62) {
+    speed = 1;
 }

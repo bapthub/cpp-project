@@ -63,7 +63,7 @@ private:
 public:
     // TODO: The constructor has to load the sdl_surface that corresponds to 
     // the texture
-    animal(const std::string& file_path, SDL_Surface* window_surface_ptr);
+    animal(const std::string& file_path, SDL_Surface* window_surface_ptr, int animal_height, int animal_width);
     ~animal();
 //     TODO: Use the destructor to release memory and "clean up behind you"
 
@@ -72,7 +72,7 @@ public:
     // Note that this function is not virtual, it does not depend
     // on the static type of the instance
 
-    // virtual void move(SDL_Surface *window_surface_ptr){} = 0;
+     virtual void move(){};
     // TODO: Animals move around, but in a different fashion depending on which
     // type of animal
 
@@ -81,24 +81,31 @@ public:
     unsigned getY() const;
 
 protected:
-    unsigned _x;
-    unsigned _y;
+    int _x;
+    int _y;
 
-    unsigned _h_size;
-    unsigned _w_size;
+    int _h_size;
+    int _w_size;
 
+    unsigned time_to_change;
+
+    unsigned _x_dir;
+    unsigned _y_dir;
+
+    unsigned speed;
+
+    void get_next_pos();
 };
 
 // Insert here:
 // class Sheep, derived from animal
 class Sheep : public animal
 {
-    unsigned const speed = 20;
 
     public:
         Sheep(SDL_Surface *window_surface_ptr);
 
-        // virtual void move(SDL_Surface *window_surface_ptr) override;
+        virtual void move() override;
 
     // TODO
     // Ctor
@@ -112,12 +119,11 @@ class Sheep : public animal
 // Once the application works for Sheep you can add the wolves
 class Wolf : public animal
 {
-    unsigned speed = 20;
 
     public:
         Wolf(SDL_Surface *window_surface_ptr);
 
-        // virtual void move(SDL_Surface *window_surface_ptr) override;
+        virtual void move() override;
 
     // Astuce : le faire se déplacer à un point aléatoire à la place de random
     // TODO
@@ -162,13 +168,16 @@ private:
     SDL_Window* window_ptr_;
     SDL_Surface* window_surface_ptr_;
     SDL_Event window_event_;
+    SDL_Surface *background_;
 
     // Other attributes here, for example an instance of ground
     // Instance of ground
-    ground *ground_;
+    std::unique_ptr<ground> ground_;
+    void print_background();
 public:
     application(unsigned n_sheep, unsigned n_wolf); // Ctor
-    ~application();                                 // Dtor
+    ~application(); 
+                                    // Dtor
 
     /*
        Main loop of the application. This ensures that the screen is updated
