@@ -145,22 +145,30 @@ void ground::add_animal(const std::shared_ptr<animal>& animal)
 animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
     this->window_surface_ptr_ = window_surface_ptr;
     this->image_ptr_ = load_surface_for(file_path, window_surface_ptr);
+
     this->_y = random() % window_surface_ptr->h;
     this->_x = random() % window_surface_ptr->w;
+
+    if (this->_y < _h_size) {
+        this->_y -=_h_size;
+    }
+    if (this->_y > window_surface_ptr->h - _h_size) {
+        this->_y -= _h_size;
+    }
+
+    if (this->_x < _w_size) {
+        this->_x += _w_size;
+    }
+    if (this->_x < window_surface_ptr->w - _w_size) {
+        this->_x -= _w_size;
+    }
+
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
 
 animal::~animal() {
     SDL_FreeSurface(this->image_ptr_);
     this->image_ptr_ = nullptr;
-}
-
-unsigned animal::getX() const {
-    return _x;
-}
-
-unsigned animal::getY() const {
-    return _y;
 }
 
 void animal::draw() {
@@ -179,8 +187,8 @@ void animal::get_next_pos() {
         return;
     }
 
-    _y_dir = random() % window_surface_ptr_->h;
-    _x_dir = random() % window_surface_ptr_->w;
+    _y_dir = (random() % (window_surface_ptr_->h - _h_size)) + _h_size / 2;
+    _x_dir = (random() % (window_surface_ptr_->w - _w_size)) + _w_size / 2;
 
     _x = _x_dir - _x < speed ? 0 : _x + ((_x_dir < _x ? -1 : 1) * speed);
     _y= _y_dir - _y < speed ? 0 : _y + ((_y_dir < _y ? -1 : 1) * speed);
