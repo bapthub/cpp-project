@@ -72,7 +72,7 @@ public:
     // Note that this function is not virtual, it does not depend
     // on the static type of the instance
 
-     virtual void move(SDL_Surface *window_surface_ptr){} = 0;
+     virtual void move(){} = 0;
     // TODO: Animals move around, but in a different fashion depending on which
     // type of animal
 

@@ -109,7 +109,7 @@ application::application(unsigned n_sheep, unsigned n_wolf)
 int application::loop(unsigned window_time)
 {
     while(SDL_GetTicks() < window_time * 1000) {
-
+        ground_->update();
     }
     return 0;
 }
@@ -135,6 +135,12 @@ ground::ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
         add_animal(wolf);
         wolf->draw();
     }
+}
+
+void ground::update() {
+    std::for_each(animals.begin(), animals.end(),[](std::shared_ptr<animal> animal) {
+        animal.move();
+    })
 }
 
 void ground::add_animal(const std::shared_ptr<animal>& animal)
@@ -195,18 +201,13 @@ void animal::get_next_pos() {
 }
 
 
-void Sheep::move(SDL_Surface *window_surface_ptr) {
+void Sheep::move() {
     get_next_pos();
 }
 
-void Wolf::move(SDL_Surface *window_surface_ptr) {
+void Wolf::move() {
     get_next_pos();
 }
-
-// void Wolf::move(SDL_Surface *window_surface_ptr) {
-//     this->_x = 0;
-//     this->_y = 0;
-// }
 
 Sheep::Sheep(SDL_Surface *window_surface_ptr): animal(path_img_sheep, window_surface_ptr) {
     this->_h_size = 71;
