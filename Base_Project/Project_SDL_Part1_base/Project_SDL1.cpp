@@ -71,8 +71,9 @@ application::application(unsigned n_sheep, unsigned n_wolf)
     window_surface_ptr_ = SDL_GetWindowSurface(window_ptr_);
     SDL_Surface *image = IMG_Load(path_img_grass);
     background_ = SDL_ConvertSurface(image, window_surface_ptr_->format, 0);
+    SDL_FreeSurface(image);
     print_background();
-    ground_ = new ground(window_surface_ptr_, n_sheep, n_wolf);
+    ground_ = std::make_unique<ground>(window_surface_ptr_, n_sheep, n_wolf);
 
     SDL_UpdateWindowSurface(window_ptr_);
 }
@@ -97,7 +98,7 @@ int application::loop(unsigned window_time)
 application::~application()
 {
     SDL_FreeSurface(background_);
-    SDL_FreeSurface(window_surface_ptr_);
+    //SDL_FreeSurface(window_surface_ptr_);
     SDL_DestroyWindow(window_ptr_);
 }
 

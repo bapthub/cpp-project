@@ -172,7 +172,7 @@ private:
 
     // Other attributes here, for example an instance of ground
     // Instance of ground
-    ground *ground_;
+    std::unique_ptr<ground> ground_;
     void print_background();
 public:
     application(unsigned n_sheep, unsigned n_wolf); // Ctor
