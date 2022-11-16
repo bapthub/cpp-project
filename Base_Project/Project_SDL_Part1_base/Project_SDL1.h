@@ -168,13 +168,16 @@ private:
     SDL_Window* window_ptr_;
     SDL_Surface* window_surface_ptr_;
     SDL_Event window_event_;
+    SDL_Surface *background_;
 
     // Other attributes here, for example an instance of ground
     // Instance of ground
     ground *ground_;
+    void print_background();
 public:
     application(unsigned n_sheep, unsigned n_wolf); // Ctor
-    ~application();                                 // Dtor
+    ~application(); 
+                                    // Dtor
 
     /*
        Main loop of the application. This ensures that the screen is updated
