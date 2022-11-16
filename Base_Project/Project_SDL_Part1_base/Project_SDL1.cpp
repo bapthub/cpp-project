@@ -108,31 +108,46 @@ application::application(unsigned n_sheep, unsigned n_wolf)
     // SDL_RenderPresent(renderer);
     SDL_UpdateWindowSurface(window_ptr_);
 
-    ground_ = new ground(window_surface_ptr_);
+    ground_ = new ground(window_surface_ptr_, n_sheep, n_wolf);
 }
 
 int application::loop(unsigned window_time)
 {
     // show image for 5 seconds
-    SDL_Delay(window_time * 1000);
+
+
+    while(SDL_GetTicks() < window_time * 1000) {
+
+    }
     // SDL_DestroyTexture(texture);
-    SDL_FreeSurface(window_surface_ptr_);
-    // SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window_ptr_);
+
     return 0;
 }
 
 application::~application()
 {
-
+    SDL_FreeSurface(window_surface_ptr_);
+    // SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window_ptr_);
+    //free IMAGES
 }
 
-ground::ground(SDL_Surface* window_surface_ptr)
+ground::ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf)
 {
     window_surface_ptr_ = window_surface_ptr;
+    for (int i = 0; i < n_sheep; ++i) {
+        std::shared_ptr<Sheep> sheep = std::make_shared<Sheep>(window_surface_ptr_);
+        add_animal(sheep);
+        sheep->draw();
+    }
+    for (int i = 0; i < n_wolf; ++i) {
+        std::shared_ptr<Wolf> wolf =std::make_shared<Wolf>(window_surface_ptr_);
+        add_animal(wolf);
+        wolf->draw();
+    }
 }
 
-void ground::add_animal(std::shared_ptr<animal> animal)
+void ground::add_animal(const std::shared_ptr<animal>& animal)
 {
     animals.push_back(animal);
 }
@@ -157,23 +172,32 @@ unsigned animal::getY() const {
     return _y;
 }
 
+void animal::draw() {
 
-// void sheep::move(SDL_Surface *window_surface_ptr) {
+    SDL_Rect img_rect{_x, _y, _h_size, _w_size};
+
+    if(SDL_BlitSurface(image_ptr_,NULL,window_surface_ptr_ ,&img_rect)) {
+        throw std::runtime_error("cannot draw animal");
+    }
+}
+
+
+// void Sheep::move(SDL_Surface *window_surface_ptr) {
 //     this->_x = 0;
 //     this->_y = 0;
 // }
 
-// void wolf::move(SDL_Surface *window_surface_ptr) {
+// void Wolf::move(SDL_Surface *window_surface_ptr) {
 //     this->_x = 0;
 //     this->_y = 0;
 // }
 
-sheep::sheep(SDL_Surface *window_surface_ptr): animal("../media/sheep.png" , window_surface_ptr) {
+Sheep::Sheep(SDL_Surface *window_surface_ptr): animal("../media/Sheep.png" , window_surface_ptr) {
     this->_h_size = 71;
     this->_w_size = 67;
 }
 
-wolf::wolf(SDL_Surface *window_surface_ptr) : animal("../media/wolf.png", window_surface_ptr) {
+Wolf::Wolf(SDL_Surface *window_surface_ptr) : animal("../media/Wolf.png", window_surface_ptr) {
     this->_h_size = 42;
     this->_w_size = 62;
 }

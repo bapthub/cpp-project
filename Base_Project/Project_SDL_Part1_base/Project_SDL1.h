@@ -40,8 +40,8 @@ constexpr unsigned frame_width = 1400;          // Width of window in pixel
 constexpr unsigned frame_height = 900;          // Height of window in pixel
 constexpr unsigned frame_boundary = 100;        // Minimal distance of animals
                                                 // to the border of the screen
-constexpr char path_img_sheep[] = "../../media/sheep.png"; 
-constexpr char path_img_wolf[] = "../../media/wolf.png"; 
+constexpr char path_img_sheep[] = "../../media/Sheep.png";
+constexpr char path_img_wolf[] = "../../media/Wolf.png";
 constexpr char path_img_grass[] = "../../media/grass.png"; 
 
 
@@ -55,7 +55,7 @@ private:
     // Animal to be drawn, also non-owning
 
     SDL_Surface* image_ptr_; 
-    // The texture of the sheep (the loaded image), use load_surface_for
+    // The texture of the Sheep (the loaded image), use load_surface_for
 
     // TODO: Attribute(s) to define its position
     //
@@ -67,7 +67,7 @@ public:
     ~animal();
 //     TODO: Use the destructor to release memory and "clean up behind you"
 
-    void draw(){}; 
+    void draw();
     // TODO: Draw the animal on the screen <-> window_surface_ptr.
     // Note that this function is not virtual, it does not depend
     // on the static type of the instance
@@ -90,13 +90,13 @@ protected:
 };
 
 // Insert here:
-// class sheep, derived from animal
-class sheep : public animal 
+// class Sheep, derived from animal
+class Sheep : public animal
 {
     unsigned const speed = 20;
 
     public:
-        sheep(SDL_Surface *window_surface_ptr);
+        Sheep(SDL_Surface *window_surface_ptr);
 
         // virtual void move(SDL_Surface *window_surface_ptr) override;
 
@@ -108,14 +108,14 @@ class sheep : public animal
 };
 
 // Insert here:
-// class wolf, derived from animal. Use only sheep at first.
-// Once the application works for sheep you can add the wolves
-class wolf : public animal
+// class Wolf, derived from animal. Use only Sheep at first.
+// Once the application works for Sheep you can add the wolves
+class Wolf : public animal
 {
     unsigned speed = 20;
 
     public:
-        wolf(SDL_Surface *window_surface_ptr);
+        Wolf(SDL_Surface *window_surface_ptr);
 
         // virtual void move(SDL_Surface *window_surface_ptr) override;
 
@@ -142,13 +142,13 @@ private:
 
 public:
     // TODO: Ctor
-    ground(SDL_Surface* window_surface_ptr); 
+    ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf);
 
     // TODO: Dtor, again for clean up (if necessary)
     ~ground(){}; 
 
     // TODO: Add an animal
-    void add_animal(std::shared_ptr<animal> animal);
+    void add_animal(const std::shared_ptr<animal>& animal);
 
     // TODO: "refresh the screen": Move animals and draw them
     // Possibly other methods, depends on your implementation
