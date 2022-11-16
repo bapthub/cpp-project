@@ -38,8 +38,11 @@ constexpr double frame_rate = 60.0;             // Refresh rate
 constexpr double frame_time = 1. / frame_rate;  // Time per frame
 constexpr unsigned frame_width = 1400;          // Width of window in pixel
 constexpr unsigned frame_height = 900;          // Height of window in pixel
-constexpr unsigned frame_boundary = 100;        // Minimal distance of animals 
+constexpr unsigned frame_boundary = 100;        // Minimal distance of animals
                                                 // to the border of the screen
+constexpr char path_img_sheep[] = "../media/sheep.png";
+constexpr char path_img_wolf[] = "../media/wolf.png";
+constexpr char path_img_grass[] = "../media/grass.png"; 
 
 
 void init();                            // Helper function to initialize SDL
@@ -52,9 +55,10 @@ private:
     // Animal to be drawn, also non-owning
 
     SDL_Surface* image_ptr_; 
-    // The texture of the sheep (the loaded image), use load_surface_for
+    // The texture of the Sheep (the loaded image), use load_surface_for
 
     // TODO: Attribute(s) to define its position
+    //
 
 public:
     // TODO: The constructor has to load the sdl_surface that corresponds to 
@@ -63,12 +67,12 @@ public:
     ~animal();
 //     TODO: Use the destructor to release memory and "clean up behind you"
 
-    void draw(){}; 
+    void draw();
     // TODO: Draw the animal on the screen <-> window_surface_ptr.
     // Note that this function is not virtual, it does not depend
     // on the static type of the instance
 
-    virtual void move(SDL_Surface *window_surface_ptr){} = 0;
+    // virtual void move(SDL_Surface *window_surface_ptr){} = 0;
     // TODO: Animals move around, but in a different fashion depending on which
     // type of animal
 
@@ -86,38 +90,40 @@ protected:
 };
 
 // Insert here:
-// class sheep, derived from animal
-class sheep : public animal 
+// class Sheep, derived from animal
+class Sheep : public animal
 {
     unsigned const speed = 20;
 
     public:
-        sheep(SDL_Surface *window_surface_ptr);
+        Sheep(SDL_Surface *window_surface_ptr);
 
-        virtual void move(SDL_Surface *window_surface_ptr) override;
+        // virtual void move(SDL_Surface *window_surface_ptr) override;
 
     // TODO
     // Ctor
     // Dtor
+    // 
     // implement functions that are purely virtual in base class
 };
 
 // Insert here:
-// class wolf, derived from animal. Use only sheep at first.
-// Once the application works for sheep you can add the wolves
-class wolf : public animal
+// class Wolf, derived from animal. Use only Sheep at first.
+// Once the application works for Sheep you can add the wolves
+class Wolf : public animal
 {
     unsigned speed = 20;
 
     public:
-        wolf(SDL_Surface *window_surface_ptr);
+        Wolf(SDL_Surface *window_surface_ptr);
 
-        virtual void move(SDL_Surface *window_surface_ptr) override;
+        // virtual void move(SDL_Surface *window_surface_ptr) override;
 
     // Astuce : le faire se déplacer à un point aléatoire à la place de random
     // TODO
     // Ctor
     // Dtor
+    //
     // implement functions that are purely virtual in base class
 };
 
@@ -130,17 +136,19 @@ private:
     SDL_Surface* window_surface_ptr_;
 
     // Attribute to store all the wolves and sheeps
-    // TODO
+    unsigned _nb_sheep;
+    unsigned _nb_wolf;
+    std::vector<std::shared_ptr<animal>> animals;
 
 public:
     // TODO: Ctor
-    ground(SDL_Surface* window_surface_ptr); 
+    ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf);
 
     // TODO: Dtor, again for clean up (if necessary)
     ~ground(){}; 
 
     // TODO: Add an animal
-    //void add_animal(some argument here);
+    void add_animal(const std::shared_ptr<animal>& animal);
 
     // TODO: "refresh the screen": Move animals and draw them
     // Possibly other methods, depends on your implementation
@@ -156,9 +164,8 @@ private:
     SDL_Event window_event_;
 
     // Other attributes here, for example an instance of ground
-
     // Instance of ground
-    ground ground_;
+    ground *ground_;
 public:
     application(unsigned n_sheep, unsigned n_wolf); // Ctor
     ~application();                                 // Dtor

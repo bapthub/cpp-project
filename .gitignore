@@ -49,3 +49,4 @@ SDL_part1
 *.pdf
 */build/*
 
+.vscode
