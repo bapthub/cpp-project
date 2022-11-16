@@ -101,7 +101,6 @@ protected:
 // class Sheep, derived from animal
 class Sheep : public animal
 {
-    unsigned const speed = 20;
 
     public:
         Sheep(SDL_Surface *window_surface_ptr);
@@ -120,7 +119,6 @@ class Sheep : public animal
 // Once the application works for Sheep you can add the wolves
 class Wolf : public animal
 {
-    unsigned speed = 20;
 
     public:
         Wolf(SDL_Surface *window_surface_ptr);
