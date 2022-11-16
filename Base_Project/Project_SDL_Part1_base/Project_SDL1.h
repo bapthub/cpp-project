@@ -138,8 +138,7 @@ private:
     // Attribute to store all the wolves and sheeps
     unsigned _nb_sheep;
     unsigned _nb_wolf;
-    std::vector<wolf> list_wolves;
-    std::vector<sheep> list_sheeps;
+    std::vector<std::shared_ptr<animal>> animals;
 
 public:
     // TODO: Ctor
@@ -149,7 +148,7 @@ public:
     ~ground(){}; 
 
     // TODO: Add an animal
-    void add_animal(animal *animal);
+    void add_animal(std::shared_ptr<animal> animal);
 
     // TODO: "refresh the screen": Move animals and draw them
     // Possibly other methods, depends on your implementation

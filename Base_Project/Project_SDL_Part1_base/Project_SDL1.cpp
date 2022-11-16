@@ -49,7 +49,7 @@ namespace {
     SDL_Window *create_window()
     {
         // Initialize SDL window
-        Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
+        Uint32 flags = SDL_WINDOW_SHOWN | SDL_QUIT;
 
         // Create a window, use frame_width and frame_height, frame_boundary
         SDL_Window* window_ptr = SDL_CreateWindow
@@ -87,27 +87,28 @@ application::application(unsigned n_sheep, unsigned n_wolf)
     window_surface_ptr_ = SDL_GetWindowSurface(window_ptr_);
     // SDL_Renderer *renderer = create_render(window_ptr);
 
-    SDL_Surface *image = IMG_Load("../../media/grass.png");
-    SDL_Surface *image_sheep = IMG_Load("../../media/sheep.png");
+    SDL_Surface *image = IMG_Load("../media/grass.png");
+    SDL_Surface* formatted_image = SDL_ConvertSurface(image, window_surface_ptr_->format, 0);
+        if (formatted_image == NULL) {
+            throw std::runtime_error("can't format surface");
+        }
+
+    SDL_FreeSurface(image);
 
     // SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
-    SDL_Rect rect_sheep{150, 150, 67, 71};
-    SDL_Rect img_rect{0, 0, 400, 400};
+    //SDL_Rect img_rect{0, 0, 200, 200};
 
     // int rec = SDL_RenderDrawRect(renderer,&img_rect);
     // std::cout << "rec: " << rec << std::endl;
     
-    int return_val = SDL_BlitSurface(image,NULL,window_surface_ptr_ ,&img_rect);
-    std::cout << "return_val: " << return_val << std::endl;
-
-    return_val = SDL_BlitSurface(image_sheep,NULL,window_surface_ptr_ ,&rect_sheep);
+    int return_val = SDL_BlitSurface(formatted_image,NULL,window_surface_ptr_ ,NULL);
     std::cout << "return_val: " << return_val << std::endl;
 
     // SDL_RenderCopy(renderer, texture, NULL, &img_rect);
     // SDL_RenderPresent(renderer);
     SDL_UpdateWindowSurface(window_ptr_);
 
-    ground_ = new ground(window_surface_ptr_); 
+    ground_ = new ground(window_surface_ptr_);
 }
 
 int application::loop(unsigned window_time)
@@ -131,10 +132,10 @@ ground::ground(SDL_Surface* window_surface_ptr)
     window_surface_ptr_ = window_surface_ptr;
 }
 
-// ground::add_animal(animal *animal)
-// {
-
-// }
+void ground::add_animal(std::shared_ptr<animal> animal)
+{
+    animals.push_back(animal);
+}
  
 animal::animal(const std::string &file_path, SDL_Surface *window_surface_ptr) {
     this->window_surface_ptr_ = window_surface_ptr;
@@ -167,12 +168,12 @@ unsigned animal::getY() const {
 //     this->_y = 0;
 // }
 
-sheep::sheep(SDL_Surface *window_surface_ptr): animal("../../media/sheep.png" , window_surface_ptr) {
+sheep::sheep(SDL_Surface *window_surface_ptr): animal("../media/sheep.png" , window_surface_ptr) {
     this->_h_size = 71;
     this->_w_size = 67;
 }
 
-wolf::wolf(SDL_Surface *window_surface_ptr) : animal("../../media/wolf.png", window_surface_ptr) {
+wolf::wolf(SDL_Surface *window_surface_ptr) : animal("../media/wolf.png", window_surface_ptr) {
     this->_h_size = 42;
     this->_w_size = 62;
 }
