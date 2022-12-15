@@ -55,7 +55,7 @@ namespace {
 
         // Create a window, use frame_width and frame_height, frame_boundary
         SDL_Window* window_ptr = SDL_CreateWindow
-            ("SDL2 Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+            ("SDL2 Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
              frame_width, frame_height, flags);
         return window_ptr;
     }
@@ -63,19 +63,72 @@ namespace {
 
 application::application(unsigned n_sheep, unsigned n_wolf)
 {
+    //Initialize SDL
+//    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+//        throw std::runtime_error(std::string(SDL_GetError()));
+//
+//    //Initialize PNG loading
+//    int imgFlags = IMG_INIT_PNG;
+//    if (!(IMG_Init(imgFlags) & imgFlags))
+//        throw std::runtime_error("SDL_image could not initialize! "
+//                                 "SDL_image Error: " + std::string(IMG_GetError()));
+
+
+//    auto window_ptr = SDL_CreateWindow("SDL2 Window",
+//                                       SDL_WINDOWPOS_CENTERED,
+//                                       SDL_WINDOWPOS_CENTERED,
+//                                       194, 259,
+//                                       0);
+//
+//    if (!window_ptr)
+//        throw std::runtime_error(std::string(SDL_GetError()));
+
+//    auto window_surface_ptr = SDL_GetWindowSurface(window_ptr);
+//
+//    if (!window_surface_ptr)
+//        throw std::runtime_error(std::string(SDL_GetError()));
+
+//    auto surf = IMG_Load("../media/grass.png");
+//    if (!surf)
+//        throw std::runtime_error("Could not load image");
+//    auto rect = SDL_Rect{0,0,194,259};
+//    if (SDL_BlitSurface(surf, NULL, window_surface_ptr, &rect))
+//        throw std::runtime_error("Could not apply texture.");
+//
+//
+//    SDL_UpdateWindowSurface(window_ptr);
+
+//    auto start = SDL_GetTicks();
+//
+//    SDL_Event e;
+//    bool quit = false;
+//    while (!quit && (SDL_GetTicks() - start < 10000)) {
+//        while (SDL_PollEvent(&e)) {
+//            if (e.type == SDL_QUIT) {
+//                quit = true;
+//                break;
+//            }
+//        }
+//    }
+
     window_ptr_ = create_window();
     if (window_ptr_ == nullptr) {
         throw std::runtime_error("application(): " + std::string(SDL_GetError()));
     }
 
+
+//
     window_surface_ptr_ = SDL_GetWindowSurface(window_ptr_);
+
     SDL_Surface *image = IMG_Load(path_img_grass);
     background_ = SDL_ConvertSurface(image, window_surface_ptr_->format, 0);
+
     SDL_FreeSurface(image);
     print_background();
     ground_ = std::make_unique<ground>(window_surface_ptr_, n_sheep, n_wolf);
 
     SDL_UpdateWindowSurface(window_ptr_);
+
 }
 
 void application::print_background()
@@ -87,10 +140,21 @@ void application::print_background()
 }
 int application::loop(unsigned window_time)
 {
-    while(SDL_GetTicks() < window_time * 1000) {
+    unsigned start = SDL_GetTicks();
+    while (SDL_GetTicks() - start < window_time * 1000)
+    {
+        if (SDL_PollEvent(&window_event_))
+        {
+            if (window_event_.type == SDL_QUIT)
+            {
+                // If SDL_QUIT event is triggered, exit the loop
+                break;
+            }
+        }
         print_background();
         ground_->update();
         SDL_UpdateWindowSurface(window_ptr_);
+        SDL_Delay(16);
     }
     return 0;
 }
