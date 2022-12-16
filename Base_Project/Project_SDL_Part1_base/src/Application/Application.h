@@ -32,7 +32,6 @@ class Application {
         Application(unsigned n_sheep, unsigned n_wolf); // Ctor
         ~Application();
         static void init();
-        static SDL_Surface* load_surface_for(const std::string& path, SDL_Surface* window_surface_ptr);
 
         int loop(unsigned period);
 };

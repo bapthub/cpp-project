@@ -10,6 +10,9 @@
 Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf)
 {
     window_surface_ptr_ = window_surface_ptr;
+    this->_nb_sheep = n_sheep;
+    this->_nb_wolf = n_wolf;
+
     for (int i = 0; i < n_sheep; ++i) {
         std::shared_ptr<Sheep> sheep = std::make_shared<Sheep>(window_surface_ptr_);
         add_animal(sheep);

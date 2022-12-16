@@ -7,10 +7,12 @@
 #include <string>
 
 const std::string path_img_sheep = "../media/sheep.png";
+const int sheep_height = 42;
+const int sheep_width = 62;
 
 class Sheep : public Animal {
 public:
-    explicit Sheep(SDL_Surface *window_surface_ptr): Animal(path_img_sheep, window_surface_ptr, 71, 67, 1) {}
+    explicit Sheep(SDL_Surface *window_surface_ptr);
 
-    virtual void move() override;
+    void move() override;
 };

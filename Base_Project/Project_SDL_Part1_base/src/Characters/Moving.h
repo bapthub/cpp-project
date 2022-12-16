@@ -1,14 +1,12 @@
-//
-// Created by Arthur Plebs on 15/12/2022.
-//
-
-#ifndef PROJECT_SDL1_MOVING_H
-#define PROJECT_SDL1_MOVING_H
-
+#pragma once
 
 class Moving {
+public:
+    explicit Moving(unsigned speed);
+    virtual void move() = 0;
 
+protected:
+    unsigned _x_dir = 0;
+    unsigned _y_dir = 0;
+    unsigned speed;
 };
-
-
-#endif //PROJECT_SDL1_MOVING_H

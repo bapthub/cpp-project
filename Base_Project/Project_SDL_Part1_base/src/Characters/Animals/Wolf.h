@@ -7,10 +7,12 @@
 #include <string>
 
 const std::string path_img_wolf = "../media/wolf.png";
+const int wolf_height = 71;
+const int wolf_width = 67;
 
 class Wolf : public Animal {
 public:
-    explicit Wolf(SDL_Surface *window_surface_ptr): Animal(path_img_wolf, window_surface_ptr, 42, 62, 1) {};
+    explicit Wolf(SDL_Surface *window_surface_ptr);
 
     void move() override;
 };

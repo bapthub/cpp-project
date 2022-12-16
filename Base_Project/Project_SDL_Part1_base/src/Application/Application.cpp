@@ -81,22 +81,3 @@ SDL_Window* Application::create_window()
              frame_width, frame_height, flags);
     return window_ptr;
 }
-
-SDL_Surface* Application::load_surface_for(const std::string& path,
-                              SDL_Surface* window_surface_ptr) {
-
-    SDL_Surface* surface = IMG_Load(path.c_str());
-
-    if (surface == NULL) {
-        throw std::runtime_error("can't load surface");
-    }
-
-    SDL_Surface* formattedSurface = SDL_ConvertSurface(surface, window_surface_ptr->format, 0);
-    if (formattedSurface == NULL) {
-        throw std::runtime_error("can't format surface");
-    }
-
-    SDL_FreeSurface(surface);
-
-    return formattedSurface;
-}

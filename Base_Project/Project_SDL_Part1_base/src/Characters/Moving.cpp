@@ -1,5 +1,6 @@
-//
-// Created by Arthur Plebs on 15/12/2022.
-//
 
 #include "Moving.h"
+
+Moving::Moving(unsigned int speed) {
+    this->speed = speed;
+}
