@@ -22,7 +22,7 @@ IF(WIN32)
   include_directories(${SDL2IMAGE_INCLUDE_DIRS})
   link_directories(${SDL2_LINK_DIRS}, ${SDL2IMAGE_LINK_DIRS})
 
-  add_executable(SDL_part1 main.cpp Project_SDL1.cpp)
+  add_executable(SDL_part1 src/main.cpp Project_SDL1.cpp)
   target_link_libraries(SDL_part1 PUBLIC SDL2 SDL2main SDL2_image)
 ELSE()
   message(STATUS "Building for Linux or Mac")
@@ -35,6 +35,8 @@ ELSE()
   #add -lSDL2_image flag
   SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -lSDL2_image")
 
-  add_executable(SDL_part1 main.cpp Project_SDL1.cpp)
+  file(GLOB_RECURSE SRC CONFIGURE_DEPENDS "./src/*.h" "./src/*.cpp")
+
+  add_executable(SDL_part1 ${SRC})
   target_link_libraries(SDL_part1 ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 ENDIF()
