@@ -9,10 +9,9 @@ Rendered::Rendered(
         const std::string& file_path,
         SDL_Surface* window_surface_ptr
 ) {
-    this->_x = x;
-    this->_y = y;
-    this->_h_size = h_size;
-    this->_w_size = w_size;
+    this->point = {x, y};
+    this->h_size = h_size;
+    this->w_size = w_size;
     this->window_surface_ptr_ = window_surface_ptr;
     this->image_ptr_ = load_surface_for(file_path, window_surface_ptr);
 }
@@ -41,7 +40,7 @@ SDL_Surface* Rendered::load_surface_for(const std::string& path, SDL_Surface* wi
 }
 
 void Rendered::draw() {
-    SDL_Rect img_rect{_x, _y, _h_size, _w_size};
+    SDL_Rect img_rect{point.x, point.y, h_size, w_size};
     if(SDL_BlitSurface(image_ptr_,NULL,window_surface_ptr_ ,&img_rect)) {
         throw std::runtime_error("cannot draw animal");
     }

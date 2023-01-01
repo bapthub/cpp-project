@@ -24,10 +24,11 @@ Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
         add_animal(wolf);
         wolf->draw();
     }
+
 }
 
 void Ground::update() {
-    std::for_each(animals.begin(), animals.end(),[](std::shared_ptr<Animal> animal) {
+    std::for_each(animals.begin(), animals.end(),[](const std::shared_ptr<Animal>& animal) {
         animal->move();
         animal->draw();
     });

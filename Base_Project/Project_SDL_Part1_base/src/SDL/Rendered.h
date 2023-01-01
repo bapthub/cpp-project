@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
+#include "../Application/Point.h"
 
 class Rendered {
 private:
@@ -22,12 +23,12 @@ public:
 
     void draw();
 
-protected:
-    int _x;
-    int _y;
+    Point point;
 
-    int _h_size;
-    int _w_size;
+    int h_size;
+    int w_size;
+
+protected:
 
     SDL_Surface* window_surface_ptr_;
     SDL_Surface* image_ptr_;
