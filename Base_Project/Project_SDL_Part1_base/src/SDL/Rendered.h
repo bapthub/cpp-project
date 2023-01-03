@@ -19,7 +19,7 @@ public:
             SDL_Surface* window_surface_ptr
             );
 
-    ~Rendered();
+    virtual ~Rendered() = 0;
 
     void draw();
 

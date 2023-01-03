@@ -17,7 +17,7 @@ std::vector<std::shared_ptr<Rendered>> SpatialHashMap::checkCollisions(std::shar
 
     for(auto key: keySet) {
         for(auto target: this->buckets_[key]) {
-            if (this->areHitboxesColliding(*target, *object)) {
+            if (target != object && this->areHitboxesColliding(*target, *object)) {
                 collisions.push_back(target);
             }
         }
@@ -29,10 +29,10 @@ std::vector<std::shared_ptr<Rendered>> SpatialHashMap::checkCollisions(std::shar
 std::set<Point> SpatialHashMap::getBucketsPoints(std::shared_ptr<Rendered> object)
 {
     std::set<Point> keySet;
-    keySet.insert({(object->point.x - object->w_size / 2) / this->BUCKET_SIZE, (object->point.y - object->h_size / 2) / this->BUCKET_SIZE});
-    keySet.insert({(object->point.x - object->w_size / 2) / this->BUCKET_SIZE, (object->point.y + object->h_size / 2) / this->BUCKET_SIZE});
-    keySet.insert({(object->point.x + object->w_size / 2) / this->BUCKET_SIZE, (object->point.y - object->h_size / 2) / this->BUCKET_SIZE});
-    keySet.insert({(object->point.x + object->w_size / 2) / this->BUCKET_SIZE, (object->point.y + object->h_size / 2) / this->BUCKET_SIZE});
+    keySet.insert({(object->point.x - object->w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object->point.y - object->h_size / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object->point.x - object->w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object->point.y + object->h_size / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object->point.x + object->w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object->point.y - object->h_size / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object->point.x + object->w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object->point.y + object->h_size / 2) / SpatialHashMap::BUCKET_SIZE});
 
     return keySet;
 }
@@ -44,4 +44,21 @@ bool SpatialHashMap::areHitboxesColliding(const Rendered& p1, const Rendered& p2
         p1.point.x + p1.w_size > p2.point.x &&
         p1.point.y < p2.point.y + p2.h_size &&
         p1.point.y + p1.h_size > p2.point.y;
+}
+
+void SpatialHashMap::clear()
+{
+    for(auto& bucket: buckets_)
+    {
+        bucket.second.clear();
+    }
+}
+
+void SpatialHashMap::removeObject(std::shared_ptr<Rendered> object)
+{
+    auto keySet = this->getBucketsPoints(object);
+
+    for(auto key: keySet) {
+        Utils::removeFromVector(this->buckets_[key], object);
+    }
 }

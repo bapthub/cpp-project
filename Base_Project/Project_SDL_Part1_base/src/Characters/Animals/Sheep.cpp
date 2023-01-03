@@ -24,3 +24,4 @@ void Sheep::move() {
     point.y= (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
+

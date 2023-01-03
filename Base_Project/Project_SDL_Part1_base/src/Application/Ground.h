@@ -7,6 +7,8 @@
 #include <map>
 #include <list>
 #include "../Characters/Animals/Animal.h"
+#include "SpatialHashMap.h"
+#include "./Collide.h"
 
 class Ground {
 private:
@@ -18,7 +20,6 @@ private:
     std::vector<std::shared_ptr<Animal>> animals;
 
     unsigned cellSize;
-    std::map<int, std::list<std::shared_ptr<Animal>>> spatialHashMap;
 
 public:
     Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf);
@@ -29,4 +30,5 @@ public:
 
     void update();
 
+    std::unique_ptr<SpatialHashMap> map = std::make_unique<SpatialHashMap>();
 };
