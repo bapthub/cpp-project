@@ -7,7 +7,8 @@ Wolf::Wolf(SDL_Surface *window_surface_ptr) : Animal(
        window_surface_ptr,
        wolf_height,
        wolf_width,
-       1
+       1,
+       ObjectType::WOLF
     ){}
 
 void Wolf::move() {
@@ -24,4 +25,8 @@ void Wolf::move() {
     point.x= (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
     point.y = (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
+}
+
+std::shared_ptr<Animal> Wolf::procreate(Animal &animal) {
+    return nullptr;
 }

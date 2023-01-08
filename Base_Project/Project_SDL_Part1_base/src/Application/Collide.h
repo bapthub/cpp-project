@@ -12,10 +12,9 @@
 class Collide {
     public:
         static void collide(
-                const Rendered& object,
-                const Animal& animal,
-                std::vector<std::shared_ptr<Animal>>& animals,
-                SDL_Surface* window_surface_ptr
+                Animal& animal1,
+                Animal& animal2,
+                std::vector<std::shared_ptr<Animal>>& animals
                 );
 };
 

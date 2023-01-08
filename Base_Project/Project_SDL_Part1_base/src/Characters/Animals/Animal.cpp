@@ -6,7 +6,8 @@ Animal::Animal(
         SDL_Surface* window_surface_ptr,
         int animal_height,
         int animal_width,
-        unsigned speed
+        unsigned speed,
+        ObjectType objectType
 ):
         Moving(speed),
         Rendered(
@@ -16,7 +17,10 @@ Animal::Animal(
                 animal_width,
                 file_path,
                 window_surface_ptr
-        ) {};
+        )
+{
+    this->type = objectType;
+};
 
 Animal::Animal(
         const std::string& file_path,
@@ -24,6 +28,7 @@ Animal::Animal(
         int animal_height,
         int animal_width,
         unsigned speed,
+        ObjectType objectType,
         Point point
 ):
         Moving(speed),
@@ -34,4 +39,7 @@ Animal::Animal(
                 animal_width,
                 file_path,
                 window_surface_ptr
-        ) {};
+        )
+{
+    this->type = objectType;
+};

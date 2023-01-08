@@ -19,4 +19,8 @@ public:
     ~Sheep() override = default;
 
     void move() override;
+
+    std::shared_ptr<Animal> procreate(Animal &animal) override;
+
+    static const int PROCREATE_DELAY = 10000;
 };

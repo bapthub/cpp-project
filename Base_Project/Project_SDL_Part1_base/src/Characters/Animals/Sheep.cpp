@@ -7,8 +7,11 @@ Sheep::Sheep(SDL_Surface *window_surface_ptr) : Animal(
         window_surface_ptr,
         sheep_height,
         sheep_width,
-        1
-){}
+        1,
+        ObjectType::SHEEP
+){
+    this->gender = random() % 2 ? Gender::FEMALE : Gender::MALE;
+}
 
 Sheep::Sheep(SDL_Surface *window_surface_ptr, Point point): Animal(
         path_img_sheep,
@@ -16,8 +19,11 @@ Sheep::Sheep(SDL_Surface *window_surface_ptr, Point point): Animal(
         sheep_height,
         sheep_width,
         1,
+        ObjectType::SHEEP,
         point
-){}
+){
+    gender = random() % 2 ? Gender::FEMALE : Gender::MALE;
+}
 
 void Sheep::move() {
     if (time_to_change > SDL_GetTicks()) {
@@ -34,3 +40,24 @@ void Sheep::move() {
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
 
+std::shared_ptr<Animal> Sheep::procreate(Animal &animal)
+{
+    if (animal.type == ObjectType::SHEEP &&
+        (this->gender ^ animal.gender) &&
+        this->next_procreate_timestamp < SDL_GetTicks() &&
+        animal.next_procreate_timestamp < SDL_GetTicks()
+    )
+    {
+        auto new_animal = std::make_shared<Sheep>(this->window_surface_ptr_, this->point);
+        new_animal->next_procreate_timestamp = SDL_GetTicks() + PROCREATE_DELAY;
+        if (this->gender == Gender::FEMALE) {
+            this->next_procreate_timestamp = SDL_GetTicks() + PROCREATE_DELAY;
+        } else {
+            animal.next_procreate_timestamp = SDL_GetTicks() + PROCREATE_DELAY;
+        }
+
+        return new_animal;
+    }
+
+    return nullptr;
+}

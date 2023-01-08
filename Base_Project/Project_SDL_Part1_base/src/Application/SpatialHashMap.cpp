@@ -1,6 +1,6 @@
 #include "SpatialHashMap.h"
 
-void SpatialHashMap::add(Rendered& object)
+void SpatialHashMap::add(Animal& object)
 {
     auto keySet = this->getBucketsPoints(object);
 
@@ -9,9 +9,9 @@ void SpatialHashMap::add(Rendered& object)
     }
 }
 
-std::vector<Rendered*> SpatialHashMap::checkCollisions(Rendered& object)
+std::vector<Animal*> SpatialHashMap::checkCollisions(Animal& object)
 {
-    std::vector<Rendered*> collisions;
+    std::vector<Animal*> collisions;
 
     auto keySet = this->getBucketsPoints(object);
 
@@ -30,7 +30,7 @@ std::vector<Rendered*> SpatialHashMap::checkCollisions(Rendered& object)
     return collisions;
 }
 
-std::set<Point> SpatialHashMap::getBucketsPoints(const Rendered& object)
+std::set<Point> SpatialHashMap::getBucketsPoints(const Animal& object)
 {
     std::set<Point> keySet;
     keySet.insert({(object.point.x - object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y - object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
@@ -41,7 +41,7 @@ std::set<Point> SpatialHashMap::getBucketsPoints(const Rendered& object)
     return keySet;
 }
 
-bool SpatialHashMap::areHitboxesColliding(const Rendered& p1, const Rendered& p2)
+bool SpatialHashMap::areHitboxesColliding(const Animal& p1, const Animal& p2)
 {
     return
         p1.point.x < p2.point.x + p2.w_size &&
@@ -58,7 +58,7 @@ void SpatialHashMap::clear()
     }
 }
 
-void SpatialHashMap::removeObject(Rendered& object)
+void SpatialHashMap::removeObject(Animal& object)
 {
     auto keySet = this->getBucketsPoints(object);
 

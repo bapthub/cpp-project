@@ -17,5 +17,8 @@ public:
     ~Wolf() override = default;
 
     void move() override;
+
+    std::shared_ptr<Animal> procreate(Animal &animal) override;
+
 };
 

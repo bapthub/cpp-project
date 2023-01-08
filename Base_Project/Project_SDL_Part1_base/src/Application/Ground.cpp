@@ -49,7 +49,7 @@ void Ground::update() {
 
         auto collisions = this->map->checkCollisions(*animal);
         for (auto& object: collisions) {
-            Collide::collide(*object, *animal, animals, this->window_surface_ptr_);
+            Collide::collide(*object, *animal, animals_cpy);
         }
 
         // remove animal because all collision with this animal are handles, we don't want this animal in further collision comparaisons

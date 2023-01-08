@@ -1,7 +1,6 @@
-//#pragma once
-//
-//enum ObjectType {
-//    WOLF,
-//    SHEEP
-//};
-////
+#pragma once
+
+enum ObjectType {
+    WOLF,
+    SHEEP
+};
