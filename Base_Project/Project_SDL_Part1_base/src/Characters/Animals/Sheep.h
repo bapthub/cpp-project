@@ -14,6 +14,8 @@ class Sheep : public Animal {
 public:
     explicit Sheep(SDL_Surface *window_surface_ptr);
 
+    Sheep(SDL_Surface *window_surface_ptr, Point point);
+
     ~Sheep() override = default;
 
     void move() override;

@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include <string>
 #include "../Application/Point.h"
+#include "../Application/ObjectTypeEnum.h"
 
 class Rendered {
 private:
@@ -23,7 +24,7 @@ public:
 
     void draw();
 
-    Point point;
+    Point point{};
 
     int h_size;
     int w_size;

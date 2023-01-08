@@ -14,6 +14,15 @@ public:
             unsigned speed
             );
 
+    Animal(
+            const std::string& file_path,
+            SDL_Surface* window_surface_ptr,
+            int animal_height,
+            int animal_width,
+            unsigned speed,
+            Point point
+            );
+
 protected:
     unsigned time_to_change = 0;
 };

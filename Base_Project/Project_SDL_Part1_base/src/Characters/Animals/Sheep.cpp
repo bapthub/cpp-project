@@ -10,6 +10,15 @@ Sheep::Sheep(SDL_Surface *window_surface_ptr) : Animal(
         1
 ){}
 
+Sheep::Sheep(SDL_Surface *window_surface_ptr, Point point): Animal(
+        path_img_sheep,
+        window_surface_ptr,
+        sheep_height,
+        sheep_width,
+        1,
+        point
+){}
+
 void Sheep::move() {
     if (time_to_change > SDL_GetTicks()) {
         point.x = (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);

@@ -8,6 +8,8 @@
 #include <vector>
 #include <iostream>
 
+#include "./Point.h"
+
 Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf)
 {
     window_surface_ptr_ = window_surface_ptr;
@@ -35,24 +37,25 @@ void Ground::update() {
     // move characters
     std::for_each(animals.begin(), animals.end(),[this](const std::shared_ptr<Animal>& animal) {
         animal->move();
-        map->add(animal);
+        map->add(*animal);
     });
 
-    // execute behavior of colliding characters
-    std::for_each(animals.begin(), animals.end(),[this](const std::shared_ptr<Animal>& animal) {
-        //check if animal is a null ptr because it could be deleted if there's a collision
-        if (!animal) {
+    auto animals_cpy = animals;
+    for (auto &animal : animals) {
+        //check if animal is a null ptr because it could have been deleted in case of collision
+        if (animal == nullptr) {
             return;
         }
 
-        auto collisions = this->map->checkCollisions(animal);
-        for (const auto& object: collisions) {
-            Collide::collide(object, animal, animals);
+        auto collisions = this->map->checkCollisions(*animal);
+        for (auto& object: collisions) {
+            Collide::collide(*object, *animal, animals, this->window_surface_ptr_);
         }
 
         // remove animal because all collision with this animal are handles, we don't want this animal in further collision comparaisons
-        map->removeObject(animal);
-    });
+        map->removeObject(*animal);
+    };
+    animals = animals_cpy;
 
     // render elements
     std::for_each(animals.begin(), animals.end(),[this](const std::shared_ptr<Animal>& animal) {
@@ -63,7 +66,7 @@ void Ground::update() {
 void Ground::add_animal(const std::shared_ptr<Animal>& animal)
 {
     animals.push_back(animal);
-    map->add(animal);
+    map->add(*animal);
 }
 
 

@@ -23,16 +23,16 @@ struct PointEqual {
 //TODO use template to create spatial hash map of something else than Rendered object
 class SpatialHashMap {
     private:
-        std::unordered_map<Point, std::vector<std::shared_ptr<Rendered>>, PointHash, PointEqual> buckets_;
-        std::set<Point> getBucketsPoints(std::shared_ptr<Rendered> object);
+        std::unordered_map<Point, std::vector<Rendered*>, PointHash, PointEqual> buckets_;
+        std::set<Point> getBucketsPoints(const Rendered& object);
         bool areHitboxesColliding(const Rendered& p1, const Rendered& p2);
         const static int BUCKET_SIZE = 100;
 
     public:
-        void add(std::shared_ptr<Rendered> object);
+        void add(Rendered& object);
         void clear();
-        void removeObject(std::shared_ptr<Rendered> object);
-        std::vector<std::shared_ptr<Rendered>> checkCollisions(std::shared_ptr<Rendered> object);
+        void removeObject(Rendered& object);
+        std::vector<Rendered*> checkCollisions(Rendered& object);
 };
 
 #endif

@@ -8,9 +8,15 @@
 #include "../SDL/Rendered.h"
 #include "../Characters/Animals/Sheep.h"
 #include "../Characters/Animals/Wolf.h"
- class Collide {
+
+class Collide {
     public:
-        static void collide(std::shared_ptr<Rendered> object, std::shared_ptr<Animal> animal, std::vector<std::shared_ptr<Animal>>& animals);
+        static void collide(
+                const Rendered& object,
+                const Animal& animal,
+                std::vector<std::shared_ptr<Animal>>& animals,
+                SDL_Surface* window_surface_ptr
+                );
 };
 
 

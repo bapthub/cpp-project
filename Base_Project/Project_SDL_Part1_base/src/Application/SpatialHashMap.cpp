@@ -1,23 +1,27 @@
 #include "SpatialHashMap.h"
 
-void SpatialHashMap::add(std::shared_ptr<Rendered> object)
+void SpatialHashMap::add(Rendered& object)
 {
     auto keySet = this->getBucketsPoints(object);
 
     for(auto point: keySet) {
-        this->buckets_[point].push_back(object);
+        this->buckets_[point].push_back(&object);
     }
 }
 
-std::vector<std::shared_ptr<Rendered>> SpatialHashMap::checkCollisions(std::shared_ptr<Rendered> object)
+std::vector<Rendered*> SpatialHashMap::checkCollisions(Rendered& object)
 {
-    std::vector<std::shared_ptr<Rendered>> collisions;
+    std::vector<Rendered*> collisions;
 
     auto keySet = this->getBucketsPoints(object);
 
     for(auto key: keySet) {
         for(auto target: this->buckets_[key]) {
-            if (target != object && this->areHitboxesColliding(*target, *object)) {
+            if (
+                    target != &object &&
+                    this->areHitboxesColliding(*target, object) &&
+                    std::count(collisions.begin(), collisions.end(), target) == 0
+            ) {
                 collisions.push_back(target);
             }
         }
@@ -26,13 +30,13 @@ std::vector<std::shared_ptr<Rendered>> SpatialHashMap::checkCollisions(std::shar
     return collisions;
 }
 
-std::set<Point> SpatialHashMap::getBucketsPoints(std::shared_ptr<Rendered> object)
+std::set<Point> SpatialHashMap::getBucketsPoints(const Rendered& object)
 {
     std::set<Point> keySet;
-    keySet.insert({(object->point.x - object->w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object->point.y - object->h_size / 2) / SpatialHashMap::BUCKET_SIZE});
-    keySet.insert({(object->point.x - object->w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object->point.y + object->h_size / 2) / SpatialHashMap::BUCKET_SIZE});
-    keySet.insert({(object->point.x + object->w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object->point.y - object->h_size / 2) / SpatialHashMap::BUCKET_SIZE});
-    keySet.insert({(object->point.x + object->w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object->point.y + object->h_size / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object.point.x - object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y - object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object.point.x - object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y + object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object.point.x + object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y - object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object.point.x + object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y + object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
 
     return keySet;
 }
@@ -54,11 +58,11 @@ void SpatialHashMap::clear()
     }
 }
 
-void SpatialHashMap::removeObject(std::shared_ptr<Rendered> object)
+void SpatialHashMap::removeObject(Rendered& object)
 {
     auto keySet = this->getBucketsPoints(object);
 
     for(auto key: keySet) {
-        Utils::removeFromVector(this->buckets_[key], object);
+        Utils::removeFromVector(this->buckets_[key], &object);
     }
 }

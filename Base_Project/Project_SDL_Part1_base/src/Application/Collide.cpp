@@ -4,15 +4,23 @@
 #include <iostream>
 
 void Collide::collide(
-        std::shared_ptr<Rendered> object,
-        std::shared_ptr<Animal> animal,
-        std::vector<std::shared_ptr<Animal>>& animals
+        const Rendered& object,
+        const Animal& animal,
+        std::vector<std::shared_ptr<Animal>>& animals,
+        SDL_Surface* window_surface_ptr
 ){
-    if (std::dynamic_pointer_cast<Sheep>(object) && std::dynamic_pointer_cast<Sheep>(animal)) {
-        Utils::removeFromVector(animals, std::dynamic_pointer_cast<Animal>(object));
+    auto sheep_o = dynamic_cast<const Sheep*>(&object);
+    auto sheep_a = dynamic_cast<const Sheep*>(&animal);
+    auto wolf_o = dynamic_cast<const Wolf*>(&object);
+    auto wolf_a = dynamic_cast<const Wolf*>(&animal);
+
+    if (sheep_a != nullptr && sheep_o) {
+//        if (sheep_o.gender ^ sheep_a.gender) {
+//            animals.push_back(std::make_shared<Sheep>(window_surface_ptr, sheep_o->point));
+//        }
     }
 
-    if (std::dynamic_pointer_cast<Wolf>(object) && std::dynamic_pointer_cast<Wolf>(animal)) {
+    if (wolf_o && wolf_a) {
 
     }
 
