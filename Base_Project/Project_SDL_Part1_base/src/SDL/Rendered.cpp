@@ -12,6 +12,8 @@ Rendered::Rendered(
     this->point = {x, y};
     this->h_size = h_size;
     this->w_size = w_size;
+    this->h_area_effect = h_size;
+    this->w_area_effect = w_size;
     this->window_surface_ptr_ = window_surface_ptr;
     this->image_ptr_ = load_surface_for(file_path, window_surface_ptr);
 }
@@ -44,4 +46,9 @@ void Rendered::draw() {
     if(SDL_BlitSurface(image_ptr_,NULL,window_surface_ptr_ ,&img_rect)) {
         throw std::runtime_error("cannot draw animal");
     }
+}
+
+void Rendered::setAreaEffect(int h, int w) {
+    w_area_effect = w;
+    h_area_effect = h;
 }

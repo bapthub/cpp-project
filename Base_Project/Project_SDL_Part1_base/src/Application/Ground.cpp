@@ -47,10 +47,14 @@ void Ground::update() {
             return;
         }
 
+        // check for collision in animal's area effect
         auto collisions = this->map->checkCollisions(*animal);
         for (auto& object: collisions) {
-            Collide::collide(*object, *animal, animals_cpy);
+            animal->collide(*object, animals_cpy);
         }
+
+        // update animal state if a buff expires for example
+        animal->updateState();
 
         // remove animal because all collision with this animal are handles, we don't want this animal in further collision comparaisons
         map->removeObject(*animal);

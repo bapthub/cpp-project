@@ -2,6 +2,7 @@
 #define PROJECT_SDL1_UTILS_H
 
 #include <vector>
+#include "../Characters/Animals/Animal.h"
 
 class Utils {
 public:
@@ -12,6 +13,8 @@ public:
             vec.erase(it);
         }
     }
+
+    static bool areAdjacent(Animal& animal1, Animal& animal2);
 };
 
 

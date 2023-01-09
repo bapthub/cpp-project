@@ -30,3 +30,8 @@ void Wolf::move() {
 std::shared_ptr<Animal> Wolf::procreate(Animal &animal) {
     return nullptr;
 }
+
+void Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
+{
+
+}

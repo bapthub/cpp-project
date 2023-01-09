@@ -43,3 +43,18 @@ Animal::Animal(
 {
     this->type = objectType;
 };
+
+bool Animal::areAdjacent(Animal& animal)
+{
+    return this->point.x < animal.point.x + animal.w_size &&
+            this->point.x + this->w_size > animal.point.x &&
+            this->point.y < animal.point.y + animal.h_size &&
+            this->point.y + this->h_size > animal.point.y;
+}
+
+void Animal::updateState()
+{
+    if (buff_speed_duration < SDL_GetTicks()) {
+        this->speed = this->initial_speed;
+    }
+}

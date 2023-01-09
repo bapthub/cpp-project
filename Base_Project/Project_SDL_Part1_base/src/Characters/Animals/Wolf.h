@@ -20,5 +20,7 @@ public:
 
     std::shared_ptr<Animal> procreate(Animal &animal) override;
 
+    void collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
+
 };
 

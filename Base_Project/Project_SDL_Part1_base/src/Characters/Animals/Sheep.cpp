@@ -5,24 +5,26 @@
 Sheep::Sheep(SDL_Surface *window_surface_ptr) : Animal(
         path_img_sheep,
         window_surface_ptr,
-        sheep_height,
-        sheep_width,
+        SHEEP_HEIGHT,
+        SHEEP_WIDTH,
         1,
         ObjectType::SHEEP
 ){
     this->gender = random() % 2 ? Gender::FEMALE : Gender::MALE;
+    this->setAreaEffect(H_AREA_EFFECT, W_AREA_EFFECT);
 }
 
 Sheep::Sheep(SDL_Surface *window_surface_ptr, Point point): Animal(
         path_img_sheep,
         window_surface_ptr,
-        sheep_height,
-        sheep_width,
+        SHEEP_HEIGHT,
+        SHEEP_WIDTH,
         1,
         ObjectType::SHEEP,
         point
 ){
     gender = random() % 2 ? Gender::FEMALE : Gender::MALE;
+    this->setAreaEffect(H_AREA_EFFECT, W_AREA_EFFECT);
 }
 
 void Sheep::move() {
@@ -61,3 +63,18 @@ std::shared_ptr<Animal> Sheep::procreate(Animal &animal)
 
     return nullptr;
 }
+
+void Sheep::collide(Animal &animal, std::vector<std::shared_ptr<Animal>> &animals) {
+
+    if (areAdjacent(animal)) {
+        auto new_animal = procreate(animal);
+        if (new_animal != nullptr) {
+            animals.push_back(new_animal);
+        }
+    }
+
+//    if (animal.type == ObjectType::WOLF) {
+//        buffSpeed(2, SDL_GetTicks() + 10000);
+//    }
+}
+

@@ -22,12 +22,16 @@ public:
 
     virtual ~Rendered() = 0;
 
-    void draw();
-
     Point point{};
 
     int h_size;
     int w_size;
+
+    int h_area_effect;
+    int w_area_effect;
+
+    void draw();
+    void setAreaEffect(int h, int w);
 
 protected:
 

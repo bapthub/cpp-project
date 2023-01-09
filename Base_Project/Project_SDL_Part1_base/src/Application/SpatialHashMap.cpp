@@ -33,10 +33,10 @@ std::vector<Animal*> SpatialHashMap::checkCollisions(Animal& object)
 std::set<Point> SpatialHashMap::getBucketsPoints(const Animal& object)
 {
     std::set<Point> keySet;
-    keySet.insert({(object.point.x - object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y - object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
-    keySet.insert({(object.point.x - object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y + object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
-    keySet.insert({(object.point.x + object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y - object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
-    keySet.insert({(object.point.x + object.w_size / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y + object.h_size / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object.point.x - object.w_area_effect / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y - object.h_area_effect / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object.point.x - object.w_area_effect / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y + object.h_area_effect / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object.point.x + object.w_area_effect / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y - object.h_area_effect / 2) / SpatialHashMap::BUCKET_SIZE});
+    keySet.insert({(object.point.x + object.w_area_effect / 2) / SpatialHashMap::BUCKET_SIZE, (object.point.y + object.h_area_effect / 2) / SpatialHashMap::BUCKET_SIZE});
 
     return keySet;
 }
@@ -44,9 +44,9 @@ std::set<Point> SpatialHashMap::getBucketsPoints(const Animal& object)
 bool SpatialHashMap::areHitboxesColliding(const Animal& p1, const Animal& p2)
 {
     return
-        p1.point.x < p2.point.x + p2.w_size &&
+        p1.point.x < p2.point.x + p2.w_area_effect &&
         p1.point.x + p1.w_size > p2.point.x &&
-        p1.point.y < p2.point.y + p2.h_size &&
+        p1.point.y < p2.point.y + p2.h_area_effect &&
         p1.point.y + p1.h_size > p2.point.y;
 }
 
