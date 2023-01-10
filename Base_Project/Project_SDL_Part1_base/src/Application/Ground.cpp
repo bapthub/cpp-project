@@ -4,6 +4,7 @@
 #include "../Characters/Animals/Wolf.h"
 
 #include <SDL.h>
+#include <algorithm>
 #include <memory>
 #include <vector>
 

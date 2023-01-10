@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include <memory>
 #include <string>
+#include <stdexcept>
 
 #include "Ground.h"
 

@@ -1,15 +1,15 @@
-#include "Dog.h"
+#include "Sheperd_dog.h"
 #include "../../Application/Application.h"
 
-Dog::Dog(SDL_Surface *window_surface_ptr) : Animal(
-       path_img_dog,
+Sheperd_dog::Sheperd_dog(SDL_Surface *window_surface_ptr) : Animal(
+       path_img_sheperd_dog,
        window_surface_ptr,
-       dog_height,
-       dog_width,
+       sheperd_dog_height,
+       sheperd_dog_width,
        1
     ){}
 
-void Dog::move() {
+void Sheperd_dog::move() {
 
     if (time_to_change > SDL_GetTicks()) {
         _x = (_x_dir - _x) < speed ? _x : _x + ((_x_dir < _x ? -1 : 1) * speed);
