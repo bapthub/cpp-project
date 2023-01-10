@@ -73,8 +73,8 @@ void Sheep::collide(Animal &animal, std::vector<std::shared_ptr<Animal>> &animal
         }
     }
 
-//    if (animal.type == ObjectType::WOLF) {
-//        buffSpeed(2, SDL_GetTicks() + 10000);
-//    }
+    if (animal.type == ObjectType::WOLF) {
+        buffSpeed(2, SDL_GetTicks() + 10000);
+    }
 }
 

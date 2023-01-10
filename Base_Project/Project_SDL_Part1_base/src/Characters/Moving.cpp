@@ -7,6 +7,8 @@ Moving::Moving(unsigned int speed) {
 }
 
 void Moving::buffSpeed(int coef, int duration) {
-    this->speed = speed *coef;
-    this->buff_speed_duration = duration;
+    if (speed == initial_speed) {
+        this->speed = 2;
+        this->buff_speed_duration = duration;
+    }
 }
