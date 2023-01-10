@@ -2,6 +2,7 @@
 #define PROJECT_SDL1_UTILS_H
 
 #include <vector>
+#include <algorithm>
 #include "../Characters/Animals/Animal.h"
 
 class Utils {
