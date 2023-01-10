@@ -4,7 +4,11 @@
 #include <SDL_image.h>
 #include <memory>
 #include <vector>
+#include <map>
+#include <list>
 #include "../Characters/Animals/Animal.h"
+#include "SpatialHashMap.h"
+#include "./Collide.h"
 
 class Ground {
 private:
@@ -15,6 +19,8 @@ private:
     unsigned _nb_wolf;
     std::vector<std::shared_ptr<Animal>> animals;
 
+    unsigned cellSize;
+
 public:
     Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf);
 
@@ -23,4 +29,6 @@ public:
     void add_animal(const std::shared_ptr<Animal>& animal);
 
     void update();
+
+    std::unique_ptr<SpatialHashMap> map = std::make_unique<SpatialHashMap>();
 };
