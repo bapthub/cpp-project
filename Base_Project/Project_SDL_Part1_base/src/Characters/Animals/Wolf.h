@@ -14,7 +14,7 @@ const int spawn_wolf_life = 5;
 class Wolf : public Animal {
 private: 
     int life = 5;
-    int distance_nearest_sheep = -1;
+    int distance_nearest_sheep = 10000;
 public:
     explicit Wolf(SDL_Surface *window_surface_ptr);
 
@@ -27,7 +27,7 @@ public:
     void collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
     
     int change_direction(int cor_to_change,int cor_to_check,int direction);
-    int avoid_dog(Wolf& wolf,std::vector<std::shared_ptr<Animal>>& animals);
-    bool hunt(Wolf& wolf,std::vector<std::shared_ptr<Animal>>& animals);
+    int avoid_dog(Animal& animal);
+    bool hunt(Animal& animal);
 };
 

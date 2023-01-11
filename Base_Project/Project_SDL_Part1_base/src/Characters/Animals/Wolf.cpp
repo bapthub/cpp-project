@@ -1,6 +1,7 @@
 
 #include "Wolf.h"
 #include "Sheep.h"
+#include "../../Utils/Utils.h"
 #include "../../Application/Application.h"
 
 Wolf::Wolf(SDL_Surface *window_surface_ptr) : Animal(
@@ -11,6 +12,15 @@ Wolf::Wolf(SDL_Surface *window_surface_ptr) : Animal(
        1,
        ObjectType::WOLF
     ){}
+
+// to delete
+void removeFromVector(std::vector<std::shared_ptr<Animal>>& animals, Animal* animal)
+{
+    auto it = std::find_if(animals.begin(), animals.end(),
+                           [animal](const std::shared_ptr<Animal>& a) { return a.get() == animal; });
+    if (it != animals.end())
+        animals.erase(it);
+}
 
 //with direction = -1 you go away, with direction = 1 you get closer
 int Wolf::change_direction(int cor_to_change,int cor_to_check,int direction)
@@ -33,78 +43,71 @@ int Wolf::change_direction(int cor_to_change,int cor_to_check,int direction)
     }
 }
 
-int Wolf::avoid_dog(Wolf& wolf,std::vector<std::shared_ptr<Animal>>& animals)
+int Wolf::avoid_dog(Animal& animal)
 {
-    for (auto animal : animals)
+    if (animal.type == ObjectType::DOG)
     {
-        if (animal->type == ObjectType::DOG)
-        {
-            wolf.point.x = change_direction(wolf.point.x,animal->point.x,-1);
-            wolf.point.y = change_direction(wolf.point.y,animal->point.y,-1);
-            return 0;
-        }
+        this->point.x = change_direction(this->point.x,animal.point.x,-1);
+        this->point.y = change_direction(this->point.y,animal.point.y,-1);
+        return 0;
     }
     return -1;
 }
 
-bool Wolf::hunt(Wolf& wolf,std::vector<std::shared_ptr<Animal>>& animals)
+bool Wolf::hunt(Animal& animal)
 {
-    int distance_nearest_sheep = 10000;
-    Animal *nearest_sheep = nullptr;
-    // for (auto animal = animals.begin(); animal != animals.end(); ++animal)
-    // std::for_each(animals.begin(), animals.end(),[this](const std::shared_ptr<Animal>& animal) 
-    for (auto animal : animals)
+    if (animal.type == ObjectType::SHEEP)
     {
-        if (animal->type == ObjectType::SHEEP)
+        int distance = std::abs(animal.point.x - this->point.x) + std::abs(animal.point.y - this->point.y);
+        if (distance < this->distance_nearest_sheep)
         {
-            int distance = std::abs(animal->point.x - wolf.point.x) + std::abs(animal->point.y - wolf.point.y);
-            if (distance < distance_nearest_sheep)
-            {
-                distance_nearest_sheep = distance;
-                nearest_sheep = animal;
-            }
+            this->distance_nearest_sheep = distance;
         }
     }
-    if(!nearest_sheep)
-    { 
-        return false;
-    }
-
-    wolf.point.x = change_direction(wolf.point.x,nearest_sheep->point.x,1);
-    wolf.point.y = change_direction(wolf.point.y,nearest_sheep->point.y,1);
-    return wolf.areAdjacent(nearest_sheep);
+    this->point.x = change_direction(this->point.x,animal.point.x,1);
+    this->point.y = change_direction(this->point.y,animal.point.y,1);
+    return this->areAdjacent(animal);
 }
 
-void Wolf::collide(Animal& wolf, std::vector<std::shared_ptr<Animal>>& animals)
+void Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
 {
-    if (avoid_dog(wolf,animals) == 0)
+    if (avoid_dog(animal) == 0)
     {
-        wolf.life -= 1;
+        this->life -= 1;
+        if (this->life <= 0)
+        {
+            removeFromVector(animals,this); 
+        }
         return;
     }
-    if (hunt(wolf,animals) == 1)
+    if (hunt(animal) == 1)
     {
-        wolf.life = spawn_wolf_life;
+        this->life = spawn_wolf_life;
+        removeFromVector(animals,&animal);
         return;
     }
     else
     {
-        wolf.life -= 1;
+        this->life -= 1;
+        if (this->life <= 0)
+        {
+            removeFromVector(animals,this);
+        }
     }
 }
 
 void Wolf::move() {
     // TODO code dupliqué par rapport à sheep mais il doit changer dans la partie 2
     if (time_to_change > SDL_GetTicks()) {
-        point.x= (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
-        point.y= (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
+        point.x = (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
+        point.y = (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
         return;
     }
 
     _y_dir = (random() % (frame_height - h_size));
     _x_dir = (random() % (frame_width - w_size));
 
-    point.x= (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
+    point.x = (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
     point.y = (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
