@@ -1,7 +1,6 @@
 
 #include "Wolf.h"
 #include "Sheep.h"
-#include "../../Utils/Utils.h"
 #include "../../Application/Application.h"
 
 Wolf::Wolf(SDL_Surface *window_surface_ptr) : Animal(
