@@ -18,6 +18,7 @@ public:
     static const int H_AREA_EFFECT = SHEEP_HEIGHT * 3;
     static const int W_AREA_EFFECT = SHEEP_WIDTH * 3;
 
+
     explicit Sheep(SDL_Surface *window_surface_ptr);
 
     Sheep(SDL_Surface *window_surface_ptr, Point point);
@@ -28,6 +29,6 @@ public:
 
     std::shared_ptr<Animal> procreate(Animal &animal) override;
 
-    void collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
+    int collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
 
 };

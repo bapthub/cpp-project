@@ -28,6 +28,10 @@ Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
         wolf->draw();
     }
 
+    //debug 
+    // for (auto &animal : animals) {
+    //     std::cout << "type " << animal->type << "(x,y) = " << animal->point.x << "," << animal->point.y << std::endl;
+    // }
 }
 
 void Ground::update() {
@@ -49,12 +53,20 @@ void Ground::update() {
 
         // check for collision in animal's area effect
         auto collisions = this->map->checkCollisions(*animal);
+        
         for (auto& object: collisions) {
-            animal->collide(*object, animals_cpy);
+            if (animal->collide(*object, animals_cpy) == 1)
+            {
+                animal->life += 5 * 60; // multiply by 60 because life is in frame
+            }
         }
 
         // update animal state if a buff expires for example
-        animal->updateState();
+        if (animal->updateState() == 1) {
+            // if animal is dead, remove it from the list
+            animals_cpy.erase(std::remove(animals_cpy.begin(), animals_cpy.end(), animal), animals_cpy.end());
+            // std::cout << "wolf is dead" << std::endl;
+        }
 
         // remove animal because all collision with this animal are handles, we don't want this animal in further collision comparaisons
         map->removeObject(*animal);

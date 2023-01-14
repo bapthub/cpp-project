@@ -3,16 +3,22 @@
 #include "Sheep.h"
 #include "../../Application/Application.h"
 
+#include <iostream>
+
 Wolf::Wolf(SDL_Surface *window_surface_ptr) : Animal(
        path_img_wolf,
        window_surface_ptr,
        wolf_height,
        wolf_width,
-       1,
+       3,
+       spawn_wolf_life * frame_rate,
        ObjectType::WOLF
-    ){}
+       
+    ){
+        this->setAreaEffect(H_AREA_EFFECT, W_AREA_EFFECT);
+        this->life = spawn_wolf_life * frame_rate;
+    }
 
-// to delete
 void removeFromVector(std::vector<std::shared_ptr<Animal>>& animals, Animal* animal)
 {
     auto it = std::find_if(animals.begin(), animals.end(),
@@ -28,33 +34,33 @@ int Wolf::change_direction(int cor_to_change,int cor_to_check,int direction)
     {
         if (cor_to_change < cor_to_check)
         {
-            return cor_to_change - 1;
+            return cor_to_change - (1 * speed);
         }
-        return cor_to_change + 1;
+        return cor_to_change + (1 * speed);
     }
     else
     {
         if (cor_to_change < cor_to_check)
         {
-            return cor_to_change + 1;
+            return cor_to_change + (1 * speed);
         }
-        return cor_to_change - 1;
+        return cor_to_change - (1 * speed);
     }
 }
 
-int Wolf::avoid_dog(Animal& animal)
+void Wolf::avoid_dog(Animal& animal)
 {
+    // std::cout << "avoiding dog" << std::endl;
     if (animal.type == ObjectType::DOG)
     {
         this->point.x = change_direction(this->point.x,animal.point.x,-1);
         this->point.y = change_direction(this->point.y,animal.point.y,-1);
-        return 0;
     }
-    return -1;
 }
 
 bool Wolf::hunt(Animal& animal)
 {
+    // std::cout << animal.type << std::endl;
     if (animal.type == ObjectType::SHEEP)
     {
         int distance = std::abs(animal.point.x - this->point.x) + std::abs(animal.point.y - this->point.y);
@@ -62,37 +68,31 @@ bool Wolf::hunt(Animal& animal)
         {
             this->distance_nearest_sheep = distance;
         }
+        // std::cout << "old x :" << this->point.x << std::endl;
+        // std::cout << "old y :" << this->point.y << std::endl;
+        this->point.x = change_direction(this->point.x,animal.point.x,1);
+        this->point.y = change_direction(this->point.y,animal.point.y,1);
+        // std::cout << "new x :" << this->point.x << std::endl;
+        // std::cout << "new y :" << this->point.y << std::endl;
+        return this->areAdjacent(animal);
     }
-    this->point.x = change_direction(this->point.x,animal.point.x,1);
-    this->point.y = change_direction(this->point.y,animal.point.y,1);
-    return this->areAdjacent(animal);
+    return false;
 }
 
-void Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
+int Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
 {
-    if (avoid_dog(animal) == 0)
-    {
-        this->life -= 1;
-        if (this->life <= 0)
-        {
-            removeFromVector(animals,this); 
-        }
-        return;
-    }
+    // std::cout << "collide" << std::endl;
+    avoid_dog(animal);
     if (hunt(animal) == 1)
     {
-        this->life = spawn_wolf_life;
+        // std::cout << this->life << std::endl;
+        // this->life = spawn_wolf_life;
+        // std::cout << this->life << std::endl;
         removeFromVector(animals,&animal);
-        return;
+        std::cout << "remove sheep" << std::endl;
+        return 1;
     }
-    else
-    {
-        this->life -= 1;
-        if (this->life <= 0)
-        {
-            removeFromVector(animals,this);
-        }
-    }
+    return 0;
 }
 
 void Wolf::move() {
@@ -110,68 +110,6 @@ void Wolf::move() {
     point.y = (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
-
-// void Wolf::move() {
-//     // Find the nearest sheep
-//     Sheep* nearest_sheep = nullptr;
-//     int min_distance = std::numeric_limits<int>::max();
-//     for (const auto& animal : Application::get_ground()->animals_) {
-//         if (auto sheep = dynamic_cast<Sheep*>(animal.get())) {
-//             // Calculate the distance to the sheep
-//             int distance = std::abs(sheep->get_x() - _x) + std::abs(sheep->get_y() - _y);
-//             if (distance < min_distance) {
-//                 min_distance = distance;
-//                 nearest_sheep = sheep;
-//             }
-//         }
-//     }
-
-//     // If a sheep was found, move towards it
-//     if (nearest_sheep) {
-//         _x_dir = nearest_sheep->get_x();
-//         _y_dir = nearest_sheep->get_y();
-//     }
-//     // Otherwise, choose a new random destination
-//     else {
-//         _y_dir = (random() % (frame_height - _h_size));
-//         _x_dir = (random() % (frame_width - _w_size));
-//     }
-
-    // Check if the sheepdog is close to the wolf
-    // bool sheepdog_nearby = false;
-    // for (const auto& animal : Application::get_ground()->animals_) {
-    //     if (auto sheepdog = dynamic_cast<Sheepdog*>(animal.get())) {
-    //         int distance = std::abs(sheepdog->get_x() - _x) + std::abs(sheepdog->get_y() - _y);
-    //         if (distance < sheepdog_fear_radius) {
-    //             sheepdog_nearby = true;
-    //             break;
-    //         }
-    //     }
-    // }
-
-    // If the sheepdog is nearby, choose a new random destination away from it
-    // if (sheepdog_nearby) {
-    //     int max_distance = 0;
-    //     for (int y = 0; y < frame_height - _h_size; ++y) {
-    //         for (int x = 0; x < frame_width - _w_size; ++x) {
-    //             int distance = std::abs(x - _x) + std::abs(y - _y);
-    //             bool sheepdog_too_close = false;
-    //             for (const auto& animal : Application::get_ground()->animals_) {
-    //                 if (auto sheepdog = dynamic_cast<Sheepdog*>(animal.get())) {
-    //                     int sheepdog_distance = std::abs(sheepdog->get_x() - x) + std::abs(sheepdog->get_y() - y);
-    //                     if (sheepdog_distance < sheepdog_fear_radius) {
-    //                         sheepdog_too_close = true;
-    //                         break;
-    //                     }
-    //                 }
-    //             }
-    //             if (!sheepdog_too_close && distance > max_distance) {
-    //                 _x_dir = x;
-    //                 _y_dir = y;
-    //                 max_distance = distance;
-    //             }
-            // }
-// }
 
 std::shared_ptr<Animal> Wolf::procreate(Animal &animal) {
     return nullptr;
