@@ -6,15 +6,15 @@
 #include "Animal.h"
 #include <string>
 
-const std::string path_img_wolf = "./media/wolf.png";
-const int wolf_height = 71;
-const int wolf_width = 67;
+const std::string path_img_dog = "./media/sheperd_dog.png";
+const int dog_height = 44;
+const int dog_width = 64;
 
-class Wolf : public Animal {
+class Dog : public Animal {
 public:
-    explicit Wolf(SDL_Surface *window_surface_ptr);
+    explicit Dog(SDL_Surface *window_surface_ptr);
 
-    ~Wolf() override = default;
+    ~Dog() override = default;
 
     void move() override;
 
@@ -23,4 +23,3 @@ public:
     void collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
 
 };
-

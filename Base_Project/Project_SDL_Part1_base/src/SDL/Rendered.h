@@ -3,7 +3,10 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
+#include <memory>
 #include <stdexcept>
+#include "../Application/Point.h"
+#include "../Application/ObjectTypeEnum.h"
 
 class Rendered {
 private:
@@ -19,16 +22,20 @@ public:
             SDL_Surface* window_surface_ptr
             );
 
-    ~Rendered();
+    virtual ~Rendered() = 0;
+
+    Point point{};
+
+    int h_size;
+    int w_size;
+
+    int h_area_effect;
+    int w_area_effect;
 
     void draw();
+    void setAreaEffect(int h, int w);
 
 protected:
-    int _x;
-    int _y;
-
-    int _h_size;
-    int _w_size;
 
     SDL_Surface* window_surface_ptr_;
     SDL_Surface* image_ptr_;

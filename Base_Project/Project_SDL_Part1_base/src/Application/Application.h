@@ -4,7 +4,6 @@
 #include <SDL_image.h>
 #include <memory>
 #include <string>
-#include <stdexcept>
 
 #include "Ground.h"
 
@@ -15,7 +14,7 @@ constexpr unsigned frame_width = 1400;          // Width of window in pixel
 constexpr unsigned frame_height = 900;          // Height of window in pixel
 constexpr unsigned frame_boundary = 100;        // Minimal distance of animals
 // to the border of the screen
-constexpr char path_img_grass[] = "../media/grass.png";
+constexpr char path_img_grass[] = "./media/grass.png";
 
 class Application {
     private:
