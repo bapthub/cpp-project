@@ -10,12 +10,10 @@ Sheep::Sheep(SDL_Surface *window_surface_ptr) : Animal(
         SHEEP_HEIGHT,
         SHEEP_WIDTH,
         1,
-        1,
         ObjectType::SHEEP
     ){
     this->gender = random() % 2 ? Gender::FEMALE : Gender::MALE;
     this->setAreaEffect(H_AREA_EFFECT, W_AREA_EFFECT);
-    this->life = 1;
 }
 
 Sheep::Sheep(SDL_Surface *window_surface_ptr, Point point): Animal(
@@ -24,13 +22,11 @@ Sheep::Sheep(SDL_Surface *window_surface_ptr, Point point): Animal(
         SHEEP_HEIGHT,
         SHEEP_WIDTH,
         1,
-        1,
         ObjectType::SHEEP,
         point
 ){
     gender = random() % 2 ? Gender::FEMALE : Gender::MALE;
     this->setAreaEffect(H_AREA_EFFECT, W_AREA_EFFECT);
-    this->life = 1;
 }
 
 void Sheep::move() {

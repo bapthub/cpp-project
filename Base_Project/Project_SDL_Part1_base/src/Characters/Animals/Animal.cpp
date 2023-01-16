@@ -7,7 +7,6 @@ Animal::Animal(
         int animal_height,
         int animal_width,
         unsigned speed,
-        unsigned life,
         ObjectType objectType
 ):
         Moving(speed),
@@ -29,7 +28,6 @@ Animal::Animal(
         int animal_height,
         int animal_width,
         unsigned speed,
-        unsigned life,
         ObjectType objectType,
         Point point
 ):
@@ -56,17 +54,17 @@ bool Animal::areAdjacent(Animal& animal)
 
 int Animal::updateState()
 {
-   	if (this->type == ObjectType::WOLF) 
-      {
-				this->life -= 1;
-				if (this->life <= 0) 
-				{
-					return 1;
-				}
-		}
-		if (buff_speed_duration < SDL_GetTicks()) 
-		{
-				this->speed = this->initial_speed;
-		}
-		return 0;
+        if (this->type == ObjectType::WOLF) 
+        {
+                this->life -= 1;
+                if (this->life <= 0) 
+                {
+                        return 1;
+                }
+        }
+        if (buff_speed_duration < SDL_GetTicks()) 
+        {
+                this->speed = this->initial_speed;
+        }
+        return 0;
 }

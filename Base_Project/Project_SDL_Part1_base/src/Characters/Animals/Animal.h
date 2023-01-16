@@ -19,7 +19,6 @@ public:
             int animal_height,
             int animal_width,
             unsigned speed,
-            unsigned life,
             ObjectType objectType
             );
 
@@ -29,7 +28,6 @@ public:
             int animal_height,
             int animal_width,
             unsigned speed,
-            unsigned life,
             ObjectType objectType,
             Point point
             );
@@ -37,7 +35,7 @@ public:
     Gender gender = Gender::UNKNOWN;
 
     int next_procreate_timestamp = 0;
-    unsigned life;
+    unsigned life = 1;
 
     ObjectType type;
     
