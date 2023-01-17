@@ -6,7 +6,6 @@
 #include "Animal.h"
 #include <string>
 
-
 const std::string path_img_sheep = "../../media/sheep.png";
 
 class Sheep : public Animal {

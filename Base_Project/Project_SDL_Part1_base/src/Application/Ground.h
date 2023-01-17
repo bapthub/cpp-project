@@ -24,8 +24,6 @@ private:
 
     unsigned cellSize;
 
-    unsigned cellSize;
-
 public:
     Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf);
 
@@ -36,6 +34,5 @@ public:
 
     void update();
 
-    void order_sheperd_dog(int x, int y);
     std::unique_ptr<SpatialHashMap> map = std::make_unique<SpatialHashMap>();
 };
