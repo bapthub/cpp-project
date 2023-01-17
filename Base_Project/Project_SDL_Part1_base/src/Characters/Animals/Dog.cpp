@@ -23,22 +23,48 @@ void Dog::move()
 
     int center_x = 300;
     int center_y = 300;
-    int range = 100;
-    speed = 20;
+    int range = 300;
+    bool is_moving = false;
+    speed = 30;
 
-    if (time_to_change > SDL_GetTicks()) {
-        point.x = (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
+    // SDL2 get mouse position
+    int mouse_x, mouse_y;
+
+    if (SDL_BUTTON(SDL_BUTTON_LEFT))
+        {
+            SDL_GetMouseState(&mouse_x, &mouse_y);
+            is_moving = true;
+            _x_dir = mouse_x;
+            _y_dir = mouse_y;
+        }
+
+    if (!is_moving)
+    {
+        if (time_to_change > SDL_GetTicks()) 
+        {
+            point.x= (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
+            point.y= (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
+            return;
+        }
+
+        _y_dir = (((rand() % (center_y + range - (center_y - range))) + center_y - range) % (frame_height - h_size));
+        _x_dir = (((rand() % (center_x + range - (center_x - range))) + center_x - range) % (frame_width - w_size));
+
+        point.x= (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
         point.y= (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
-        return;
+        this->time_to_change = SDL_GetTicks() + (random() % 4000);
     }
-int randomNumber = (rand() % (center_y + range - (center_y - range))) + center_y - range;
 
-    _y_dir = (((rand() % (center_y + range - (center_y - range))) + center_y - range) % (frame_height - h_size));
-    _x_dir = (((rand() % (center_x + range - (center_x - range))) + center_x - range) % (frame_width - w_size));
+    while (is_moving)
+    {
+        point.x= (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
+        point.y= (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
 
-    point.x= (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
-    point.y= (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
-    this->time_to_change = SDL_GetTicks() + (random() % 4000);
+        if (point.x == _x_dir && point.y == _y_dir)
+        {
+            is_moving = false;
+        }
+    }
 }
 
 std::shared_ptr<Animal> Dog::procreate(Animal &animal) 
