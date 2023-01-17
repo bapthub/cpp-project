@@ -30,5 +30,7 @@ public:
 
     void update();
 
+    void order_sheperd_dog(int x, int y);
+
     std::unique_ptr<SpatialHashMap> map = std::make_unique<SpatialHashMap>();
 };

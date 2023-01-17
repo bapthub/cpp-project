@@ -39,6 +39,16 @@ int Application::loop(unsigned window_time)
                 // If SDL_QUIT event is triggered, exit the loop
                 break;
             }
+            // Ckick event used to move the sheperd's dog
+            else if (window_event_.type == SDL_MOUSEBUTTONDOWN)
+            {
+                if (window_event_.button.button == SDL_BUTTON_LEFT)
+                {
+                    int x = window_event_.button.x;
+                    int y = window_event_.button.y;
+                    Dog::move_to(x, y);
+                }
+            }
         }
         print_background();
         ground_->update();

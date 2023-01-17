@@ -73,6 +73,16 @@ void Ground::update() {
     });
 }
 
+void Ground::order_sheperd_dog(int x, int y)
+{
+    for (auto &animal : animals) {
+        if (animal->type == ObjectType::DOG) 
+        {
+            animal->setTarget(x, y);
+        }
+    }
+}
+
 void Ground::add_animal(const std::shared_ptr<Animal>& animal)
 {
     animals.push_back(animal);

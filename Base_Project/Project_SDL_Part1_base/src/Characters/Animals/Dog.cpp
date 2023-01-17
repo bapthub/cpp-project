@@ -67,6 +67,12 @@ void Dog::move()
     }
 }
 
+void Dog::move_to(int x, int y)
+{
+    _x_dir = x;
+    _y_dir = y;
+}
+
 std::shared_ptr<Animal> Dog::procreate(Animal &animal) 
 {
     return nullptr;
