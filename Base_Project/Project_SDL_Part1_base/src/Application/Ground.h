@@ -7,6 +7,7 @@
 #include <map>
 #include <list>
 #include "../Characters/Animals/Animal.h"
+#include "../Characters/Humans/Human.h"
 #include "SpatialHashMap.h"
 #include "./Collide.h"
 
@@ -18,6 +19,8 @@ private:
     unsigned _nb_sheep;
     unsigned _nb_wolf;
     std::vector<std::shared_ptr<Animal>> animals;
+    std::vector<std::shared_ptr<human>> humans;
+
 
     unsigned cellSize;
 
@@ -27,6 +30,7 @@ public:
     ~Ground(){};
 
     void add_animal(const std::shared_ptr<Animal>& animal);
+    void add_human(const std::shared_ptr<human> &human);
 
     void update();
 

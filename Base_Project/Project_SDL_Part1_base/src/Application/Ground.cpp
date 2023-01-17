@@ -2,6 +2,8 @@
 #include "Ground.h"
 #include "../Characters/Animals/Sheep.h"
 #include "../Characters/Animals/Wolf.h"
+#include "../Characters/Humans/Human.h"
+
 
 #include <SDL.h>
 #include <memory>
@@ -11,7 +13,7 @@
 
 #include "./Point.h"
 
-unsigned countDifferentAnimals(const std::vector<std::shared_ptr<Animal>>& animals) 
+unsigned countDifferentAnimals(const std::vector<std::shared_ptr<Animal>>& animals)
 {
     std::unordered_set<ObjectType> types;
     for (const auto& animal : animals) {
@@ -58,7 +60,6 @@ void Ground::update() {
 
         // check for collision in animal's area effect
         auto collisions = this->map->checkCollisions(*animal);
-        
         for (auto& object: collisions) {
             if (animal->collide(*object, animals_cpy) == 1)
             {
@@ -80,7 +81,11 @@ void Ground::update() {
         animal->draw();
     });
 
-    if (countDifferentAnimals(animals) == 1) 
+    // render Shepherd
+    std::for_each(humans.begin(), humans.end(), [](std::shared_ptr<human> human)
+                  { human->draw(); });
+
+    if (countDifferentAnimals(animals) == 1)
     {
         std::cout << "Game ending" << std::endl;
         SDL_Quit();
@@ -93,5 +98,8 @@ void Ground::add_animal(const std::shared_ptr<Animal>& animal)
     map->add(*animal);
 }
 
-
+void Ground::add_human(const std::shared_ptr<human> &human)
+{
+    humans.push_back(human);
+}
 
