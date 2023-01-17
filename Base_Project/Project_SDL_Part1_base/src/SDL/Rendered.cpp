@@ -44,21 +44,9 @@ SDL_Surface* Rendered::load_surface_for(const std::string& path, SDL_Surface* wi
 void Rendered::draw() {
     SDL_Rect img_rect{point.x, point.y, h_size, w_size};
     if(SDL_BlitSurface(image_ptr_,NULL,window_surface_ptr_ ,&img_rect)) {
-        throw std::runtime_error("cannot draw animal");
+        throw std::runtime_error("cannot draw character");
     }
 }
-
-void Rendered::draw_shepherd()
-{
- //   std::cout << "draw Shepherd position: (" << this->_x << ", " << this->_y << ")" << std::endl;
-
-    SDL_Rect img_rect{point.x, point.y, h_size, w_size};
-    if (SDL_BlitSurface(image_ptr_, NULL, window_surface_ptr_, &img_rect))
-    {
-        throw std::runtime_error("cannot draw Shepherd");
-    }
-}
-
 
 void Rendered::setAreaEffect(int h, int w) {
     w_area_effect = w;

@@ -33,7 +33,6 @@ public:
     int w_area_effect;
 
     void draw();
-    void draw_shepherd();
     void setAreaEffect(int h, int w);
 
 protected:
