@@ -2,5 +2,6 @@
 
 enum ObjectType {
     WOLF,
-    SHEEP
+    SHEEP,
+    SHEPHERD
 };

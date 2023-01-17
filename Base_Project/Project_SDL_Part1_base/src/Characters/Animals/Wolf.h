@@ -6,7 +6,7 @@
 #include "Animal.h"
 #include <string>
 
-const std::string path_img_wolf = "./media/wolf.png";
+const std::string path_img_wolf = "../../media/wolf.png";
 const int wolf_height = 71;
 const int wolf_width = 67;
 

@@ -2,6 +2,8 @@
 #include "Ground.h"
 #include "../Characters/Animals/Sheep.h"
 #include "../Characters/Animals/Wolf.h"
+#include "../Characters/Humans/Human.h"
+
 
 #include <SDL.h>
 #include <memory>
@@ -65,6 +67,10 @@ void Ground::update() {
     std::for_each(animals.begin(), animals.end(),[this](const std::shared_ptr<Animal>& animal) {
         animal->draw();
     });
+    
+    // render Shepherd
+    std::for_each(humans.begin(), humans.end(), [](std::shared_ptr<human> human)
+                  { human->draw(); });
 }
 
 void Ground::add_animal(const std::shared_ptr<Animal>& animal)
@@ -73,5 +79,8 @@ void Ground::add_animal(const std::shared_ptr<Animal>& animal)
     map->add(*animal);
 }
 
-
+void Ground::add_human(const std::shared_ptr<human> &human)
+{
+    humans.push_back(human);
+}
 
