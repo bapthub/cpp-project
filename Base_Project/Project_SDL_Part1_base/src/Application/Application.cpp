@@ -85,21 +85,21 @@ SDL_Window *Application::create_window()
 }
 
 void Application::handle_keyboard_input(const std::shared_ptr<Shepherd> &shepherd_ptr)
-{
+{   
     const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-    if (keyState[SDL_SCANCODE_UP])
+    if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W]) //Keyboard layout of SDL is only on QWERTY so we use WASD
     {
         shepherd_ptr->move(0, -3);
     }
-    if (keyState[SDL_SCANCODE_DOWN])
+    if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
     {
         shepherd_ptr->move(0, 3);
     }
-    if (keyState[SDL_SCANCODE_LEFT])
+    if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
     {
         shepherd_ptr->move(-3, 0);
     }
-    if (keyState[SDL_SCANCODE_RIGHT])
+    if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
     {
         shepherd_ptr->move(3, 0);
     }
