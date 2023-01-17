@@ -2,13 +2,13 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include <memory>
+#include <math.h>
 #include "Animal.h"
-#include <string>
 
 const std::string path_img_dog = "./media/sheperd_dog.png";
-const int dog_height = 44;
+const int dog_height = 44;                  // The size of the dog
 const int dog_width = 64;
+
 
 class Dog : public Animal {
 public:
