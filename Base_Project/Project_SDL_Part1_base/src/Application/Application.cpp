@@ -1,11 +1,11 @@
-
 #include "Application.h"
 
 Application::Application(unsigned n_sheep, unsigned n_wolf)
 {
 
     window_ptr_ = create_window();
-    if (window_ptr_ == nullptr) {
+    if (window_ptr_ == nullptr)
+    {
         throw std::runtime_error("application(): " + std::string(SDL_GetError()));
     }
     window_surface_ptr_ = SDL_GetWindowSurface(window_ptr_);
@@ -19,6 +19,8 @@ Application::Application(unsigned n_sheep, unsigned n_wolf)
 
     SDL_UpdateWindowSurface(window_ptr_);
 
+    shepherd_ptr_ = std::make_shared<Shepherd>(window_surface_ptr_);
+    ground_->add_human(shepherd_ptr_);
 }
 
 Application::~Application()
@@ -50,6 +52,7 @@ int Application::loop(unsigned window_time)
                 }
             }
         }
+        handle_keyboard_input(shepherd_ptr_);
         print_background();
         ground_->update();
         SDL_UpdateWindowSurface(window_ptr_);
@@ -74,20 +77,40 @@ void Application::init()
 
 void Application::print_background()
 {
-    if(SDL_BlitSurface(background_,NULL,window_surface_ptr_ ,NULL) < 0)
+    if (SDL_BlitSurface(background_, NULL, window_surface_ptr_, NULL) < 0)
     {
         throw std::runtime_error("can't blit surface");
     }
 }
 
-SDL_Window* Application::create_window()
+SDL_Window *Application::create_window()
 {
     // Initialize SDL window
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_QUIT;
 
     // Create a window, use frame_width and frame_height, frame_boundary
-    SDL_Window* window_ptr = SDL_CreateWindow
-            ("SDL2 Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-             frame_width, frame_height, flags);
+    SDL_Window *window_ptr = SDL_CreateWindow("SDL2 Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                              frame_width, frame_height, flags);
     return window_ptr;
+}
+
+void Application::handle_keyboard_input(const std::shared_ptr<Shepherd> &shepherd_ptr)
+{   
+    const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+    if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W]) //Keyboard layout of SDL is only on QWERTY so we use WASD
+    {
+        shepherd_ptr->move(0, -3);
+    }
+    if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
+    {
+        shepherd_ptr->move(0, 3);
+    }
+    if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
+    {
+        shepherd_ptr->move(-3, 0);
+    }
+    if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
+    {
+        shepherd_ptr->move(3, 0);
+    }
 }

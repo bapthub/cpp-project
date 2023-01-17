@@ -34,7 +34,7 @@ public:
 
     Gender gender = Gender::UNKNOWN;
 
-    unsigned next_procreate_timestamp = 0;
+    int next_procreate_timestamp = 0;
 
     ObjectType type;
 

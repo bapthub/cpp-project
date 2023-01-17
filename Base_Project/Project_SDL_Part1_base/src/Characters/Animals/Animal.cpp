@@ -11,8 +11,8 @@ Animal::Animal(
 ):
         Moving(speed),
         Rendered(
-                (rand() % (frame_height - h_size)),
-                (rand() % (frame_width - w_size)),
+                (random() % (frame_height - h_size)),
+                (random() % (frame_width - w_size)),
                 animal_height,
                 animal_width,
                 file_path,

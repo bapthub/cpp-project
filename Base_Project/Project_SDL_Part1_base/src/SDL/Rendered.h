@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 #include <string>
 #include <memory>
-#include <stdexcept>
+#include <iostream>
 #include "../Application/Point.h"
 #include "../Application/ObjectTypeEnum.h"
 
