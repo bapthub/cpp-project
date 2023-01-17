@@ -50,7 +50,6 @@ int Wolf::avoid_dog(Animal& animal)
 
 bool Wolf::hunt(Animal& animal)
 {
-    // std::cout << animal.type << std::endl;
     if (animal.type == ObjectType::SHEEP)
     {
         int distance = std::abs(animal.point.x - this->point.x) + std::abs(animal.point.y - this->point.y);
@@ -67,7 +66,6 @@ bool Wolf::hunt(Animal& animal)
 
 int Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
 {
-    // std::cout << "collide" << std::endl;
     if (avoid_dog(animal) == 1)
     {
         return 0;
@@ -76,11 +74,7 @@ int Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
     {
         this->life += 5 * frame_rate; 
         this->distance_nearest_sheep = -1; //reset distance
-        // std::cout << this->life << std::endl;
-        // this->life = spawn_wolf_life;
-        // std::cout << this->life << std::endl;
         removeFromVector(animals,&animal);
-        std::cout << "remove sheep" << std::endl;
         return 1;
     }
     return 0;

@@ -6,9 +6,19 @@
 #include <SDL.h>
 #include <memory>
 #include <vector>
+#include <unordered_set>
 #include <iostream>
 
 #include "./Point.h"
+
+unsigned countDifferentAnimals(const std::vector<std::shared_ptr<Animal>>& animals) 
+{
+    std::unordered_set<ObjectType> types;
+    for (const auto& animal : animals) {
+        types.insert(animal->type);
+    }
+    return types.size();
+}
 
 Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf)
 {
@@ -27,15 +37,10 @@ Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
         add_animal(wolf);
         wolf->draw();
     }
-
-    //debug 
-    // for (auto &animal : animals) {
-    //     std::cout << "type " << animal->type << "(x,y) = " << animal->point.x << "," << animal->point.y << std::endl;
-    // }
 }
 
 void Ground::update() {
-//     clear all map to insert object with their new position
+// clear all map to insert object with their new position
     map->clear();
 
     // move characters
@@ -65,7 +70,6 @@ void Ground::update() {
         if (animal->updateState() == 1) {
             // if animal is dead, remove it from the list
             animals_cpy.erase(std::remove(animals_cpy.begin(), animals_cpy.end(), animal), animals_cpy.end());
-            // std::cout << "wolf is dead" << std::endl;
         }
 
     };
@@ -75,6 +79,12 @@ void Ground::update() {
     std::for_each(animals.begin(), animals.end(),[this](const std::shared_ptr<Animal>& animal) {
         animal->draw();
     });
+
+    if (countDifferentAnimals(animals) == 1) 
+    {
+        std::cout << "Game ending" << std::endl;
+        SDL_Quit();
+    }
 }
 
 void Ground::add_animal(const std::shared_ptr<Animal>& animal)

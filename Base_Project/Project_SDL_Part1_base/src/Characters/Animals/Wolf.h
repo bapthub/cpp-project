@@ -9,7 +9,7 @@
 const std::string path_img_wolf = "./media/wolf.png";
 const int wolf_height = 71;
 const int wolf_width = 67; 
-const int spawn_wolf_life = 10;
+const int spawn_wolf_life = 5;
 
 class Wolf : public Animal {
 private: 
