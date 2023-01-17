@@ -68,8 +68,6 @@ void Ground::update() {
             // std::cout << "wolf is dead" << std::endl;
         }
 
-        // remove animal because all collision with this animal are handles, we don't want this animal in further collision comparaisons
-        map->removeObject(*animal);
     };
     animals = animals_cpy;
 

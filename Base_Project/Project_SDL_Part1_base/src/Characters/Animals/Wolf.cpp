@@ -10,7 +10,7 @@ Wolf::Wolf(SDL_Surface *window_surface_ptr) : Animal(
        window_surface_ptr,
        wolf_height,
        wolf_width,
-       3,
+       1,
        ObjectType::WOLF
        
     ){
