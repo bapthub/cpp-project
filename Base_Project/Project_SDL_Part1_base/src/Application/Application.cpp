@@ -48,7 +48,7 @@ int Application::loop(unsigned window_time)
                 {
                     int x = window_event_.button.x;
                     int y = window_event_.button.y;
-                    Dog::move_to(x, y);
+                    ground_::move_to(x, y);
                 }
             }
         }
@@ -95,7 +95,7 @@ SDL_Window *Application::create_window()
 }
 
 void Application::handle_keyboard_input(const std::shared_ptr<Shepherd> &shepherd_ptr)
-{   
+{
     const Uint8 *keyState = SDL_GetKeyboardState(NULL);
     if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W]) //Keyboard layout of SDL is only on QWERTY so we use WASD
     {

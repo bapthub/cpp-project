@@ -21,9 +21,6 @@ private:
     std::vector<std::shared_ptr<Animal>> animals;
     std::vector<std::shared_ptr<human>> humans;
 
-
-    unsigned cellSize;
-
     unsigned cellSize;
 
 public:
