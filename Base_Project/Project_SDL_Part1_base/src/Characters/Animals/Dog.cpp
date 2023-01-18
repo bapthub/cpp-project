@@ -12,28 +12,24 @@ Dog::Dog(SDL_Surface *window_surface_ptr) : Animal(
        Point{0, 0}
     ){}
 
-int click_target_x = -1;                  // The target of the dog
+int click_target_x = -1;        // The target of the dog
 int click_target_y = -1;
 
-int shepherd_x = -1;                      // The position of the shepherd
+int shepherd_x = -1;            // The position of the shepherd
 int shepherd_y = -1;
 
-bool is_moving = false;                   // Is the dog moving to a clicked position
+bool is_moving = false;         // If the dog is moving towards a target
 
+int range = 200;                // Area around the center where the dog can move
 
 void Dog::move()
 {
-    // Initialize the character's position and movement variables
-
     // _x_dir : Target x position, must be in the visible area and in the range around the center
     // _y_dir : Target y position, must be in the visible area and in the range around the center
     // point.x : Current x position
     // point.y : Current y position
     // speed : Speed of the character
-
-    // Area around the center where the dog can move
-    int range = 100;
-    speed = 4;
+    speed = 3;
 
     std::pair<int, int> shepherd_position = get_shepherd_position();
     int center_x = shepherd_position.first;
@@ -44,41 +40,53 @@ void Dog::move()
     int click_y = dog_target.second;
 
     // If a position is clicked, is_moving is set to true and the dog moves to the clicked position
-    if (click_x != -1 && click_y != -1)
+    // The target position is set to the clicked position
+    if (click_x != -1)
     {
+        _x_dir = (dog_target.first - dog_width / 2) % (frame_height - h_size);
+        _y_dir = (dog_target.second - dog_height / 2) % (frame_height - h_size);
+        set_dog_target(-1, -1);
         is_moving = true;
     }
 
-    // If the dog is moving, the target position is set to the clicked position
-    if (is_moving)
+    if (point.x == _x_dir && point.y == _y_dir && is_moving)
     {
-        _x_dir = click_x;
-        _y_dir = click_y;
-    }
-
-    // If the dog is at the clicked position, is_moving is set to false
-    if (is_moving && point.x == _x_dir && point.y == _y_dir)
-    {
-        click_x = -1;
-        click_y = -1;
+        std::cout << "Dog reached target" << std::endl;
         is_moving = false;
     }
 
     // Else random movement around the shepherd
 
-    else if (time_to_change > SDL_GetTicks() && !is_moving) 
+    if (time_to_change > SDL_GetTicks()) 
     {
         point.x= (_x_dir - point.x) < speed ? point.x: point.x+ ((_x_dir < point.x? -1 : 1) * speed);
         point.y= (_y_dir - point.y) < speed ? point.y: point.y+ ((_y_dir < point.y? -1 : 1) * speed);
         return;
     }
 
-    else if (!is_moving && (time_to_change < SDL_GetTicks()))
-    {
-        _y_dir = ((center_y - range) + (rand() % ((center_y + range) - (center_y - range)))) % (frame_height - h_size);
-        _x_dir = ((center_x - range) + (rand() % ((center_x + range) - (center_x - range)))) % (frame_width - w_size);
+    if ((time_to_change < SDL_GetTicks()) && !is_moving)
+    { 
+        int min_y = (center_y - range);
+        if (min_y < 0)
+            min_y = 0;
+        int max_y = (center_y + range);
+        if (max_y > frame_height - h_size)
+            max_y = frame_height - h_size;
+
+        int min_x = (center_x - range);
+        if (min_x < 0)
+            min_x = 0;        
+        int max_x = (center_x + range);
+        if (max_x > frame_width - w_size)
+            max_x = frame_width - w_size;
+        
+        _y_dir = (min_y + (rand() % (max_y - min_y))) % (frame_height - h_size);
+        _x_dir = (min_x + (rand() % (max_x - min_x))) % (frame_width - w_size);
+        if (_y_dir < 0)
+            _y_dir = dog_height;
+        if (_x_dir < 0)
+            _x_dir = dog_width;
     }
-    
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
 }
 
