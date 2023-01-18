@@ -33,5 +33,7 @@ std::shared_ptr<Animal> Wolf::procreate(Animal &animal) {
 
 void Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
 {
-
+    if (animal.type == ObjectType::DOG) {
+        buffSpeed(2, SDL_GetTicks() + 10000);
+    }
 }
