@@ -75,8 +75,8 @@ void Dog::move()
 
     else if (!is_moving && (time_to_change < SDL_GetTicks()))
     {
-        _y_dir = (((rand() % (center_y + range - (center_y - range))) + center_y - range) % (frame_height - h_size));
-        _x_dir = (((rand() % (center_x + range - (center_x - range))) + center_x - range) % (frame_width - w_size));
+        _y_dir = ((center_y - range) + (rand() % ((center_y + range) - (center_y - range)))) % (frame_height - h_size);
+        _x_dir = ((center_x - range) + (rand() % ((center_x + range) - (center_x - range)))) % (frame_width - w_size);
     }
     
     this->time_to_change = SDL_GetTicks() + (random() % 4000);
@@ -113,5 +113,5 @@ std::shared_ptr<Animal> Dog::procreate(Animal &animal)
 
 void Dog::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
 {
-
+    return;
 }
