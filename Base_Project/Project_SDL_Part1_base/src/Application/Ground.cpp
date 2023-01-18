@@ -29,12 +29,6 @@ Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
         add_animal(wolf);
         wolf->draw();
     }
-
-    // Add the Sheperd Dog :
-    std::shared_ptr<Dog> sheperd_dog = std::make_shared<Dog>(window_surface_ptr_);
-    add_animal(sheperd_dog);
-    sheperd_dog->draw();
-
 }
 
 void Ground::update() {
@@ -76,16 +70,6 @@ void Ground::update() {
     // Render Shepherd
     std::for_each(humans.begin(), humans.end(), [](std::shared_ptr<human> human)
                   { human->draw(); });
-}
-
-void Ground::order_sheperd_dog(int x, int y)
-{
-    for (auto &animal : animals) {
-        if (animal->type == ObjectType::DOG) 
-        {
-            animal->setTarget(x, y);
-        }
-    }
 }
 
 void Ground::add_animal(const std::shared_ptr<Animal>& animal)

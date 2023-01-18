@@ -29,6 +29,7 @@ class SpatialHashMap {
 
     public:
         void add(Animal& object);
+        
         void clear();
         void removeObject(Animal& object);
         std::vector<Animal*> checkCollisions(Animal& object);

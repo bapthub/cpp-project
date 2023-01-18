@@ -8,6 +8,7 @@
 
 
 #include "Ground.h"
+#include "../Characters/Animals/Dog.h"
 #include "../Characters/Humans/Human.h"
 #include "../Characters/Humans/Shepherd.h"
 
@@ -33,8 +34,9 @@ class Application {
         void print_background();
         SDL_Window *create_window();
 
-        // Shepherd pointer
+        // Shepherd and dog pointer
         std::shared_ptr<Shepherd> shepherd_ptr_;
+        std::shared_ptr<Dog> dog_ptr_;
 
 
     public:
@@ -46,5 +48,4 @@ class Application {
         
         //Handle keyboard events to move the Shepherd
         void handle_keyboard_input(const std::shared_ptr<Shepherd> &shepherd_ptr);
-
 };
