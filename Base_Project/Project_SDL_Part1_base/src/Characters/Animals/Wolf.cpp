@@ -70,6 +70,7 @@ int Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
     {
         return 0;
     }
+
     if (hunt(animal) == 1)
     {
         this->life += 5 * frame_rate; 
@@ -77,6 +78,11 @@ int Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
         removeFromVector(animals,&animal);
         return 1;
     }
+
+    if (animal.type == ObjectType::DOG) {
+        buffSpeed(2, SDL_GetTicks() + 10000);
+    }
+
     return 0;
 }
 

@@ -19,6 +19,9 @@ Application::Application(unsigned n_sheep, unsigned n_wolf)
 
     SDL_UpdateWindowSurface(window_ptr_);
 
+    dog_ptr_ = std::make_shared<Dog>(window_surface_ptr_);
+    ground_->add_animal(dog_ptr_);
+
     shepherd_ptr_ = std::make_shared<Shepherd>(window_surface_ptr_);
     ground_->add_human(shepherd_ptr_);
 }
@@ -41,7 +44,19 @@ int Application::loop(unsigned window_time)
                 // If SDL_QUIT event is triggered, exit the loop
                 break;
             }
+
+            else if (window_event_.type == SDL_MOUSEBUTTONDOWN)
+            {
+                if (window_event_.button.button == SDL_BUTTON_LEFT)
+                {
+                    int x = window_event_.button.x;
+                    int y = window_event_.button.y;
+                    dog_ptr_->set_dog_target(x, y);
+                }
+            }
         }
+        // Share the shepherd's position with the dog
+        dog_ptr_->set_shepherd_position(shepherd_ptr_->point.x, shepherd_ptr_->point.y);
         handle_keyboard_input(shepherd_ptr_);
         print_background();
         ground_->update();

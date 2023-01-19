@@ -10,6 +10,7 @@
 #include "Ground.h"
 #include "../Characters/Humans/Human.h"
 #include "../Characters/Humans/Shepherd.h"
+#include "../Characters/Animals/Dog.h"
 
 // Definitions
 constexpr double frame_rate = 60.0;             // Refresh rate
@@ -34,6 +35,7 @@ class Application {
 
         // Shepherd pointer
         std::shared_ptr<Shepherd> shepherd_ptr_;
+        std::shared_ptr<Dog> dog_ptr_;
 
 
     public:

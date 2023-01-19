@@ -3,6 +3,7 @@
 #include "../Characters/Animals/Sheep.h"
 #include "../Characters/Animals/Wolf.h"
 #include "../Characters/Humans/Human.h"
+#include "../Characters/Animals/Dog.h"
 
 
 #include <SDL.h>
@@ -85,7 +86,8 @@ void Ground::update() {
     std::for_each(humans.begin(), humans.end(), [](std::shared_ptr<human> human)
                   { human->draw(); });
 
-    if (countDifferentAnimals(animals) == 1)
+    // if remain only dog and wolf or dog and sheep we terminate the game.
+    if (countDifferentAnimals(animals) == 2)
     {
         std::cout << "Game ending" << std::endl;
         SDL_Quit();
