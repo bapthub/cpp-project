@@ -11,8 +11,8 @@ Animal::Animal(
 ):
         Moving(speed),
         Rendered(
-                (random() % (frame_height - h_size)),
-                (random() % (frame_width - w_size)),
+                (random() % (frame_width - animal_width)),
+                (random() % (frame_height - animal_height)),
                 animal_height,
                 animal_width,
                 file_path,
@@ -52,9 +52,19 @@ bool Animal::areAdjacent(Animal& animal)
             this->point.y + this->h_size > animal.point.y;
 }
 
-void Animal::updateState()
+int Animal::updateState()
 {
-    if (buff_speed_duration < SDL_GetTicks()) {
-        this->speed = this->initial_speed;
-    }
+        if (this->type == ObjectType::WOLF) 
+        {
+                this->life -= 1;
+                if (this->life <= 0) 
+                {
+                        return 1;
+                }
+        }
+        if (buff_speed_duration < SDL_GetTicks()) 
+        {
+                this->speed = this->initial_speed;
+        }
+        return 0;
 }

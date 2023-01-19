@@ -6,9 +6,19 @@
 #include <SDL.h>
 #include <memory>
 #include <vector>
+#include <unordered_set>
 #include <iostream>
 
 #include "./Point.h"
+
+unsigned countDifferentAnimals(const std::vector<std::shared_ptr<Animal>>& animals) 
+{
+    std::unordered_set<ObjectType> types;
+    for (const auto& animal : animals) {
+        types.insert(animal->type);
+    }
+    return types.size();
+}
 
 Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf)
 {
@@ -27,11 +37,10 @@ Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
         add_animal(wolf);
         wolf->draw();
     }
-
 }
 
 void Ground::update() {
-//     clear all map to insert object with their new position
+// clear all map to insert object with their new position
     map->clear();
 
     // move characters
@@ -49,15 +58,20 @@ void Ground::update() {
 
         // check for collision in animal's area effect
         auto collisions = this->map->checkCollisions(*animal);
+        
         for (auto& object: collisions) {
-            animal->collide(*object, animals_cpy);
+            if (animal->collide(*object, animals_cpy) == 1)
+            {
+                animal->life += 5 * 60; // multiply by 60 because life is in frame
+            }
         }
 
         // update animal state if a buff expires for example
-        animal->updateState();
+        if (animal->updateState() == 1) {
+            // if animal is dead, remove it from the list
+            animals_cpy.erase(std::remove(animals_cpy.begin(), animals_cpy.end(), animal), animals_cpy.end());
+        }
 
-        // remove animal because all collision with this animal are handles, we don't want this animal in further collision comparaisons
-        map->removeObject(*animal);
     };
     animals = animals_cpy;
 
@@ -65,6 +79,12 @@ void Ground::update() {
     std::for_each(animals.begin(), animals.end(),[this](const std::shared_ptr<Animal>& animal) {
         animal->draw();
     });
+
+    if (countDifferentAnimals(animals) == 1) 
+    {
+        std::cout << "Game ending" << std::endl;
+        SDL_Quit();
+    }
 }
 
 void Ground::add_animal(const std::shared_ptr<Animal>& animal)

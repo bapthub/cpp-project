@@ -3,9 +3,7 @@
 #include <iostream>
 #include <memory>
 
-
 #include "Application/Application.h"
-
 
 int main(int argc, char* argv[]) {
 
