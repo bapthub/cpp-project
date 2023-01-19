@@ -1,14 +1,11 @@
 #include "Human.h"
-#include "../../Application/Application.h"
 
 human::human(
     const std::string &file_path, 
     SDL_Surface *window_surface_ptr, 
     int human_height, 
     int human_width,
-    unsigned speed,
-    ObjectType objectType,
-    Point point
+    ObjectType objectType
 ):
         Rendered(
                 20,

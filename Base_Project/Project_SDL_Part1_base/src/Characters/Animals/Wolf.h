@@ -3,8 +3,10 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <memory>
-#include "Animal.h"
 #include <string>
+#include <iostream>
+#include "Animal.h"
+#include "../../Application/Application.h"
 
 const std::string path_img_wolf = "../../media/wolf.png";
 const int wolf_height = 71;
@@ -25,7 +27,7 @@ public:
 
     std::shared_ptr<Animal> procreate(Animal &animal) override;
 
-    int collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
+    void collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
     
     int change_direction(int cor_to_change,int cor_to_check);
     int avoid_dog(Animal& animal);

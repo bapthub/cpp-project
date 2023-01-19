@@ -1,6 +1,5 @@
 #include "Dog.h"
 #include "../../Application/Application.h"
-#include "../../Application/Ground.h"
 
 Dog::Dog(SDL_Surface *window_surface_ptr) : Animal(
         path_img_dog,
@@ -24,11 +23,6 @@ int range = 200;                // Area around the center where the dog can move
 
 void Dog::move()
 {
-    // _x_dir : Target x position, must be in the visible area and in the range around the center
-    // _y_dir : Target y position, must be in the visible area and in the range around the center
-    // point.x : Current x position
-    // point.y : Current y position
-    // speed : Speed of the character
     speed = 3;
 
     std::pair<int, int> shepherd_position = get_shepherd_position();
@@ -36,12 +30,10 @@ void Dog::move()
     int center_y = shepherd_position.second;
 
     std::pair<int, int> dog_target = get_dog_target();
-    int click_x = dog_target.first;
-    int click_y = dog_target.second;
 
     // If a position is clicked, is_moving is set to true and the dog moves to the clicked position
     // The target position is set to the clicked position
-    if (click_x != -1)
+    if (dog_target.first != -1)
     {
         _x_dir = (dog_target.first - dog_width / 2) % (frame_height - h_size);
         _y_dir = (dog_target.second - dog_height / 2) % (frame_height - h_size);
@@ -119,7 +111,4 @@ std::shared_ptr<Animal> Dog::procreate(Animal &animal)
     return nullptr;
 }
 
-int Dog::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
-{
-    return 0;
-}
+void Dog::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) {}

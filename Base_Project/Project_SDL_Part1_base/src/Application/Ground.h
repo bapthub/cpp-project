@@ -9,7 +9,6 @@
 #include "../Characters/Animals/Animal.h"
 #include "../Characters/Humans/Human.h"
 #include "SpatialHashMap.h"
-#include "./Collide.h"
 
 class Ground {
 private:
@@ -22,8 +21,6 @@ private:
     std::vector<std::shared_ptr<human>> humans;
 
 
-    unsigned cellSize;
-
 public:
     Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wolf);
 
@@ -33,8 +30,6 @@ public:
     void add_human(const std::shared_ptr<human> &human);
 
     void update();
-
-    void order_sheperd_dog(int x, int y);
 
     std::unique_ptr<SpatialHashMap> map = std::make_unique<SpatialHashMap>();
 };

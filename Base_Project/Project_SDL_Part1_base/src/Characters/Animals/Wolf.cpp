@@ -1,9 +1,4 @@
-
 #include "Wolf.h"
-#include "Sheep.h"
-#include "../../Application/Application.h"
-
-#include <iostream>
 
 Wolf::Wolf(SDL_Surface *window_surface_ptr) : Animal(
        path_img_wolf,
@@ -64,11 +59,11 @@ bool Wolf::hunt(Animal& animal)
     return false;
 }
 
-int Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
+void Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
 {
     if (avoid_dog(animal) == 1)
     {
-        return 0;
+        return;
     }
 
     if (hunt(animal) == 1)
@@ -76,14 +71,12 @@ int Wolf::collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals)
         this->life += 5 * frame_rate; 
         this->distance_nearest_sheep = -1; //reset distance
         removeFromVector(animals,&animal);
-        return 1;
+        this->life += 5 * 60;
     }
 
     if (animal.type == ObjectType::DOG) {
         buffSpeed(2, SDL_GetTicks() + 10000);
     }
-
-    return 0;
 }
 
 void Wolf::move() {

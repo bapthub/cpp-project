@@ -14,8 +14,6 @@ public:
             vec.erase(it);
         }
     }
-
-    static bool areAdjacent(Animal& animal1, Animal& animal2);
 };
 
 

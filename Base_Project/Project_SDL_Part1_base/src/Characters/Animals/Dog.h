@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include <math.h>
+#include <cmath>
 #include "Animal.h"
 
 const std::string path_img_dog = "../../media/sheperd_dog.png";
@@ -19,7 +19,7 @@ public:
 
     std::shared_ptr<Animal> procreate(Animal &animal) override;
 
-    int collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
+    void collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) override;
 
     void set_shepherd_position(int x, int y);
     std::pair<int, int> get_shepherd_position();

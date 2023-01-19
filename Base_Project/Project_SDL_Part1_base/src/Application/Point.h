@@ -1,6 +1,4 @@
-
-#ifndef PROJECT_SDL1_POINT_H
-#define PROJECT_SDL1_POINT_H
+#pragma once
 
 struct Point {
 public:
@@ -18,5 +16,3 @@ public:
     }
 
 };
-
-#endif //PROJECT_SDL1_POINT_H
