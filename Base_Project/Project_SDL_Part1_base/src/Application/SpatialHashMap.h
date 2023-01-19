@@ -1,5 +1,4 @@
-#ifndef PROJECT_SDL1_SPATIALHASHMAP_H
-#define PROJECT_SDL1_SPATIALHASHMAP_H
+#pragma once
 
 #include <unordered_map>
 #include <set>
@@ -33,5 +32,3 @@ class SpatialHashMap {
         void removeObject(Animal& object);
         std::vector<Animal*> checkCollisions(Animal& object);
 };
-
-#endif

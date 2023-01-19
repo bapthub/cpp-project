@@ -6,9 +6,7 @@ Shepherd::Shepherd(SDL_Surface *window_surface_ptr) : human(
         window_surface_ptr,
         SHEPHERD_HEIGHT,
         SHEPHERD_WIDTH,
-        1,
-        ObjectType::SHEPHERD,
-        point
+        ObjectType::SHEPHERD
 )
 {
 

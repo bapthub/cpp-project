@@ -10,19 +10,18 @@
 #include "Ground.h"
 #include "../Characters/Humans/Human.h"
 #include "../Characters/Humans/Shepherd.h"
+#include "../Characters/Animals/Dog.h"
 
 // Definitions
 constexpr double frame_rate = 60.0;             // Refresh rate
-constexpr double frame_time = 1. / frame_rate;  // Time per frame
-constexpr unsigned frame_width = 500;          // Width of window in pixel
-constexpr unsigned frame_height = 500;          // Height of window in pixel
-constexpr unsigned frame_boundary = 100;        // Minimal distance of animals
+constexpr unsigned frame_width = 1200;          // Width of window in pixel
+constexpr unsigned frame_height = 700;          // Height of window in pixel
+
 // to the border of the screen
 constexpr char path_img_grass[] = "../../media/grass.png";
 
 class Application {
     private:
-        // The following are OWNING ptrs
         SDL_Window* window_ptr_;
         SDL_Surface* window_surface_ptr_;
         SDL_Event window_event_;
@@ -34,6 +33,7 @@ class Application {
 
         // Shepherd pointer
         std::shared_ptr<Shepherd> shepherd_ptr_;
+        std::shared_ptr<Dog> dog_ptr_;
 
 
     public:
@@ -45,5 +45,4 @@ class Application {
         
         //Handle keyboard events to move the Shepherd
         void handle_keyboard_input(const std::shared_ptr<Shepherd> &shepherd_ptr);
-
 };

@@ -41,7 +41,7 @@ public:
     
     virtual std::shared_ptr<Animal> procreate(Animal& animal) = 0;
 
-    virtual int collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) = 0;
+    virtual void collide(Animal& animal, std::vector<std::shared_ptr<Animal>>& animals) = 0;
 
     int updateState();
 

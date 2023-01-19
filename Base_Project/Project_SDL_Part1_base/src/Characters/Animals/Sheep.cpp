@@ -66,7 +66,7 @@ std::shared_ptr<Animal> Sheep::procreate(Animal &animal)
     return nullptr;
 }
 
-int Sheep::collide(Animal &animal, std::vector<std::shared_ptr<Animal>> &animals) {
+void Sheep::collide(Animal &animal, std::vector<std::shared_ptr<Animal>> &animals) {
 
     if (areAdjacent(animal) && animal.type == ObjectType::SHEEP) {
         auto new_animal = procreate(animal);
@@ -79,6 +79,5 @@ int Sheep::collide(Animal &animal, std::vector<std::shared_ptr<Animal>> &animals
     if (animal.type == ObjectType::WOLF) {
         buffSpeed(2, SDL_GetTicks() + 10000);
     }
-    return 0;
 }
 

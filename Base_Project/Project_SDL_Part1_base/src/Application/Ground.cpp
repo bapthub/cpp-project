@@ -2,16 +2,12 @@
 #include "Ground.h"
 #include "../Characters/Animals/Sheep.h"
 #include "../Characters/Animals/Wolf.h"
-#include "../Characters/Humans/Human.h"
-
 
 #include <SDL.h>
 #include <memory>
 #include <vector>
 #include <unordered_set>
 #include <iostream>
-
-#include "./Point.h"
 
 unsigned countDifferentAnimals(const std::vector<std::shared_ptr<Animal>>& animals)
 {
@@ -42,7 +38,7 @@ Ground::Ground(SDL_Surface* window_surface_ptr, unsigned n_sheep, unsigned n_wol
 }
 
 void Ground::update() {
-// clear all map to insert object with their new position
+    // clear all map to insert object with their new position
     map->clear();
 
     // move characters
@@ -61,10 +57,7 @@ void Ground::update() {
         // check for collision in animal's area effect
         auto collisions = this->map->checkCollisions(*animal);
         for (auto& object: collisions) {
-            if (animal->collide(*object, animals_cpy) == 1)
-            {
-                animal->life += 5 * 60; // multiply by 60 because life is in frame
-            }
+            animal->collide(*object, animals_cpy);
         }
 
         // update animal state if a buff expires for example
@@ -85,7 +78,8 @@ void Ground::update() {
     std::for_each(humans.begin(), humans.end(), [](std::shared_ptr<human> human)
                   { human->draw(); });
 
-    if (countDifferentAnimals(animals) == 1)
+    // if remain only dog and wolf or dog and sheep we terminate the game.
+    if (countDifferentAnimals(animals) == 2)
     {
         std::cout << "Game ending" << std::endl;
         SDL_Quit();

@@ -16,7 +16,6 @@ public:
     static const int SHEPHERD_WIDTH = 90;
 
     explicit Shepherd(SDL_Surface *window_surface_ptr);
-    Shepherd(SDL_Surface *window_surface_ptr, Point point);
     ~Shepherd() override = default;
 
     void move(int x_offset, int y_offset);
