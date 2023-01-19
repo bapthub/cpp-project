@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
+#include <iostream>
 #include <memory>
 #include "../Application/Point.h"
 #include "../Application/ObjectTypeEnum.h"
