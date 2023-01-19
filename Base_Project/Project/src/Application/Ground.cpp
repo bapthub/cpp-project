@@ -82,6 +82,10 @@ void Ground::update() {
     if (countDifferentAnimals(animals) == 2)
     {
         std::cout << "Game ending" << std::endl;
+        // Print the score wich is the number of animals left that of the Object type SHEEP
+        std::cout << "Score: " << std::count_if(animals.begin(), animals.end(), [](const std::shared_ptr<Animal>& animal) {
+            return animal->type == ObjectType::SHEEP;
+        }) << std::endl;
         SDL_Quit();
     }
 }

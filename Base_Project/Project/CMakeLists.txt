@@ -22,8 +22,8 @@ IF(WIN32)
   include_directories(${SDL2IMAGE_INCLUDE_DIRS})
   link_directories(${SDL2_LINK_DIRS}, ${SDL2IMAGE_LINK_DIRS})
 
-  add_executable(SDL_part1 src/main.cpp Project_SDL1.cpp)
-  target_link_libraries(SDL_part1 PUBLIC SDL2 SDL2main SDL2_image)
+  add_executable(SDL_project src/main.cpp Project_SDL1.cpp)
+  target_link_libraries(SDL_project PUBLIC SDL2 SDL2main SDL2_image)
 ELSE()
   message(STATUS "Building for Linux or Mac")
 
@@ -37,6 +37,6 @@ ELSE()
 
   file(GLOB_RECURSE SRC CONFIGURE_DEPENDS "./src/*.h" "./src/*.cpp")
 
-  add_executable(SDL_part1 ${SRC})
-  target_link_libraries(SDL_part1 ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+  add_executable(SDL_project ${SRC})
+  target_link_libraries(SDL_project ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 ENDIF()
