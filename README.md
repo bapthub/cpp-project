@@ -1,5 +1,8 @@
 # C++ Project for EPITA course
 
+# Launch script
+./launch.sh n_sheeps n_wolfs max_game_duration
+
 ## Compile the project
 
 Here are the steps to compile the project on Linux after cloning the repository :

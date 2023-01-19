@@ -45,7 +45,6 @@ SDL_part1
 *.out
 *.app
 
-*.sh
 *.pdf
 */build/*
 
